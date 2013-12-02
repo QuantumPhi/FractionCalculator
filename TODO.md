@@ -1,0 +1,8 @@
+-> (In comments) ITERATORS
+-> UI (Pending; Port to C# possible)
+-> Parsing optimization (split)
+  -> FIX FRACTION SPLITTING
+-> Comparison
+-> Whole Numbers
+-> Negative Fractions
+-> Parenthesis
