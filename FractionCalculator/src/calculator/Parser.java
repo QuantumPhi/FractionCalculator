@@ -5,27 +5,22 @@ import java.util.*;
 public class Parser {
 	public static IntFraction parseFraction(String input) {
 		boolean positive = true;
-		int startPos = 0;
 		int wholePart = 0;
 		int numerator = 0;
-		int denominator = 0;
-		if(input.charAt(0) == '-') {
-			positive = false;
-			startPos = 1;
+		int denominator = 1;
+		int startPos = 0;
+		if(input.charAt(startPos) == '-')
+			startPos++;
+		for(int i = startPos; i < input.length(); i++) {
+			if(input.contains("_")) {
+				wholePart = Integer.parseInt(input.substring(startPos, input.indexOf('_')));
+				i = input.indexOf('_') + 1;
+			}
+			else if(!input.contains("/")) {
+				wholePart = Integer.parseInt(input.substring(startPos, input.length()));
+				break;
+			}
 		}
-		
-		if(input.contains("_"))
-			wholePart = Integer.parseInt(input.substring(startPos, input.indexOf('_')));
-		if(input.contains("/")) {
-			numerator = Integer.parseInt(input.substring(input.indexOf('_') + 1, input.indexOf('/')));
-			denominator = Integer.parseInt(input.substring(input.indexOf('/') + 1, input.length()));
-		}
-		
-		if(wholePart == 0) {
-			IntFraction newFraction = new IntFraction(positive, numerator, denominator);
-			return newFraction;
-		}
-		
 		IntFraction newFraction = new IntFraction(positive, wholePart, numerator, denominator);
 		return newFraction;
 	}
@@ -35,7 +30,6 @@ public class Parser {
 		List<String> orderOp = new ArrayList<String>();
 		int space = 0;
 		for(int i = 0; i < opString.size(); i++) {
-			//TODO: Add iterator
 			if(opString.get(i).equals("*") || opString.get(i).equals("/")) {
 				orderOp.add(opString.get(i));
 				opLoc.add(i - space);
@@ -44,7 +38,6 @@ public class Parser {
 			}
 		}
 		
-		//TODO: Add iterator
 		int i = 0;
 		while(i < orderOp.size()) {
 			if(orderOp.get(i).equals("*")) {
@@ -58,7 +51,6 @@ public class Parser {
 			i++;
 		}
 		
-		//TODO: Add iterator
 		int j = 0;
 		while(j < opString.size()) {
 			if(opString.get(j).equals("+")) {
