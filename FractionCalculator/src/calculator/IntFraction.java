@@ -83,11 +83,11 @@ public class IntFraction {
 	public String toString() {
 		String returnString = "";
 		int wholePart = 0;
-		while(Math.abs(this.numerator) > Math.abs(this.denominator)) {
+		while(Math.abs(this.numerator) >= Math.abs(this.denominator)) {
 			this.numerator = this.numerator > 0 ? this.numerator - this.denominator : this.numerator + this.denominator;
-			wholePart = this.numerator > 0 ? wholePart++ : wholePart--;
+			wholePart = this.numerator > 0 ? wholePart + 1 : wholePart - 1;
 		}
-		returnString = wholePart == 0 ? returnString + wholePart + "_" : returnString;
+		returnString = wholePart == 0 ? returnString : returnString + wholePart + "_";
 		returnString += this.numerator + "/";
 		returnString += this.denominator;
 		

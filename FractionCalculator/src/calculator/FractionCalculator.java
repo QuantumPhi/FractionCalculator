@@ -10,18 +10,13 @@ public class FractionCalculator {
 		System.out.println("Fraction Calculator");
 		while(!input.equals("quit")) {
 			input = console.nextLine();
-			if(input.equals("test")) {
-				generator = new InputGenerator();
-				generator.generate(50);
+			List<String> fracList = Parser.split(input);
+			for(int i = 0; i < fracList.size(); i++) {
+				
 			}
 		}
-	}
-	
-	public static boolean isOperator(char inputChar) {
-		String operator = "+-*/";
-		for(int i = 0; i < operator.length(); i++)
-			if(inputChar == operator.charAt(i))
-				return true;
-		return false;
+		InputGenerator inputGen = new InputGenerator();
+		inputGen.generate(50, 5);
+		System.out.println("Program finished.");
 	}
 }

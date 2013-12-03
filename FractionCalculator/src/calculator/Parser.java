@@ -66,4 +66,27 @@ public class Parser {
 		
 		return fracArray.get(0);
 	}
+	
+	public static List<String> split(String input) {
+		List<String> returnString = new ArrayList<String>();
+		String listAdd = "";
+		for(int i = 0; i < input.length(); i++) {
+			if(input.charAt(i) != ' ')
+				listAdd += input.charAt(i);
+			else {
+				returnString.add(listAdd);
+				listAdd = "";
+			}
+		}
+		
+		return returnString;
+	}
+	
+	public static boolean isOperator(char inputChar) {
+		String operator = "+-*/";
+		for(int i = 0; i < operator.length(); i++)
+			if(inputChar == operator.charAt(i))
+				return true;
+		return false;
+	}
 }
