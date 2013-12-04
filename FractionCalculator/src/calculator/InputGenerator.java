@@ -4,6 +4,12 @@ import java.io.*;
 import java.util.*;
 
 public class InputGenerator {
+	public static void main(String[] args) {
+		InputGenerator inputGen = new InputGenerator();
+		inputGen.generate(50, 5);
+		System.out.println("Program finished");
+	}
+	
 	public void generate(int number, int cyclesLimit) {
 		for(int i = 0; i < number; i++) {
 			Random generator = new Random();
