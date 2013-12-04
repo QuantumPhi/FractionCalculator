@@ -26,42 +26,26 @@ public class Parser {
 	}
 	
 	public static IntFraction parseExpression(List<IntFraction> fracArray, List<String> opString) {
-		List<Integer> opLoc = new ArrayList<Integer>();
-		List<String> orderOp = new ArrayList<String>();
-		int space = 0;
+		IntFraction newFraction = null;
+		List<String> precedence = new ArrayList<String>();
+		List<Integer> precLoc = new ArrayList<Integer>();
+		int precSpace = 0;
 		for(int i = 0; i < opString.size(); i++) {
 			if(opString.get(i).equals("*") || opString.get(i).equals("/")) {
-				orderOp.add(opString.get(i));
-				opLoc.add(i - space);
-				space++;
+				precedence.add(opString.get(i));
+				precLoc.add(i - precSpace);
+				precSpace++;
 				opString.remove(i);
 			}
 		}
-		
-		int i = 0;
-		while(i < orderOp.size()) {
-			if(orderOp.get(i).equals("*")) {
-				IntFraction newFraction = fracArray.get(opLoc.get(i)).multiply(fracArray.get(opLoc.get(i) + 1));
-				fracArray.remove(opLoc.get(i).intValue()); fracArray.remove(opLoc.get(i).intValue()); fracArray.add(opLoc.get(i).intValue(), newFraction);
-			}
-			else if(orderOp.get(i).equals("/")) {
-				IntFraction newFraction = fracArray.get(opLoc.get(i)).divide(fracArray.get(opLoc.get(i) + 1));
-				fracArray.remove(i); fracArray.remove(i); fracArray.add(i, newFraction);
-			}
-			i++;
+		for(int i = 0; i < precedence.size(); i++) {
+			newFraction = precedence.get(i).equals("*") ? fracArray.get(precLoc.get(i)).multiply(fracArray.get(precLoc.get(i) + 1)) : fracArray.get(precLoc.get(i)).divide(fracArray.get(precLoc.get(i) + 1));
+			fracArray.remove(precLoc.get(i)); fracArray.remove(precLoc.get(i)); fracArray.add(precLoc.get(i), newFraction);
 		}
 		
-		int j = 0;
-		while(j < opString.size()) {
-			if(opString.get(j).equals("+")) {
-				IntFraction newFraction = fracArray.get(0).add(fracArray.get(1));
-				fracArray.remove(0); fracArray.remove(0); fracArray.add(0, newFraction);
-			}
-			if(opString.get(j).equals("-")) {
-				IntFraction newFraction = fracArray.get(0).subtract(fracArray.get(1));
-				fracArray.remove(0); fracArray.remove(0); fracArray.add(0, newFraction);
-			}
-			j++;
+		for(int i = 0; i < opString.size(); i++) {
+			newFraction = opString.get(0).equals("+") ? fracArray.get(0).add(fracArray.get(1)) : fracArray.get(0).subtract(fracArray.get(1));
+			fracArray.remove(0); fracArray.remove(0); fracArray.add(0, newFraction);
 		}
 		
 		return fracArray.get(0);
@@ -78,14 +62,15 @@ public class Parser {
 				listAdd = "";
 			}
 		}
+		returnString.add(listAdd);
 		
 		return returnString;
 	}
 	
-	public static boolean isOperator(char inputChar) {
+	public static boolean isOperator(char input) {
 		String operator = "+-*/";
 		for(int i = 0; i < operator.length(); i++)
-			if(inputChar == operator.charAt(i))
+			if(input == operator.charAt(i)) 
 				return true;
 		return false;
 	}
