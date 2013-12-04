@@ -7,24 +7,16 @@ public class Parser {
 		int wholePart = 0;
 		int numerator = 0;
 		int denominator = 1;
-		for(int i = 0; i < input.length(); i++) {
-			if(input.contains("_")) {
-				wholePart = Integer.parseInt(input.substring(0, input.indexOf('_')));
-				i = input.indexOf('_') + 1;
-			}
-			else if(!input.contains("/")) {
-				wholePart = Integer.parseInt(input.substring(0, input.length()));
-				break;
-			}
-			else if(input.contains("_") && input.contains("/")) {
-				wholePart = Integer.parseInt(input.substring(0, input.indexOf('_')));
-				numerator = Integer.parseInt(input.substring(input.indexOf('_') + 1, input.indexOf('/')));
-				denominator = Integer.parseInt(input.substring(input.indexOf('/') + 1, input.length()));
-			}
-			else if(!input.contains("_") && input.contains("/")) {
-				numerator = Integer.parseInt(input.substring(0, input.indexOf('/')));
-				denominator = Integer.parseInt(input.substring(input.indexOf('/') + 1, input.length()));
-			}
+		if(!input.contains("/"))
+			wholePart = Integer.parseInt(input.substring(0, input.length()));
+		else if(input.contains("_") && input.contains("/")) {
+			wholePart = Integer.parseInt(input.substring(0, input.indexOf('_')));
+			numerator = Integer.parseInt(input.substring(input.indexOf('_') + 1, input.indexOf('/')));
+			denominator = Integer.parseInt(input.substring(input.indexOf('/') + 1, input.length()));
+		}
+		else if(!input.contains("_") && input.contains("/")) {
+			numerator = Integer.parseInt(input.substring(0, input.indexOf('/')));
+			denominator = Integer.parseInt(input.substring(input.indexOf('/') + 1, input.length()));
 		}
 		IntFraction newFraction = new IntFraction(true, wholePart, numerator, denominator);
 		return newFraction;
@@ -34,13 +26,12 @@ public class Parser {
 		IntFraction newFraction = null;
 		List<String> precedence = new ArrayList<String>();
 		List<Integer> precLoc = new ArrayList<Integer>();
-		int precSpace = 0;
 		for(int i = 0; i < opString.size(); i++) {
 			if(opString.get(i).equals("*") || opString.get(i).equals("/")) {
 				precedence.add(opString.get(i));
-				precLoc.add(i - precSpace);
-				precSpace++;
+				precLoc.add(i);
 				opString.remove(i);
+				i--;
 			}
 		}
 		for(int i = 0; i < precedence.size(); i++) {
@@ -49,7 +40,7 @@ public class Parser {
 		}
 		
 		for(int i = 0; i < opString.size(); i++) {
-			newFraction = opString.get(0).equals("+") ? fracArray.get(0).add(fracArray.get(1)) : fracArray.get(0).subtract(fracArray.get(1));
+			newFraction = opString.get(i).equals("+") ? fracArray.get(0).add(fracArray.get(1)) : fracArray.get(0).subtract(fracArray.get(1));
 			fracArray.remove(0); fracArray.remove(0); fracArray.add(0, newFraction);
 		}
 		
