@@ -25,8 +25,6 @@ public class FractionCalculator {
 			IntFraction solution = Parser.parseExpression(fracList, opList);
 			System.out.println(solution);
 		}
-		InputGenerator inputGen = new InputGenerator();
-		inputGen.generate(50, 5);
 		System.out.println("Program finished.");
 	}
 }

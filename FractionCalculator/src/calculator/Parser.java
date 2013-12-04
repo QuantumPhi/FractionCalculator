@@ -4,24 +4,29 @@ import java.util.*;
 
 public class Parser {
 	public static IntFraction parseFraction(String input) {
-		boolean positive = true;
 		int wholePart = 0;
 		int numerator = 0;
 		int denominator = 1;
-		int startPos = 0;
-		if(input.charAt(startPos) == '-')
-			startPos++;
-		for(int i = startPos; i < input.length(); i++) {
+		for(int i = 0; i < input.length(); i++) {
 			if(input.contains("_")) {
-				wholePart = Integer.parseInt(input.substring(startPos, input.indexOf('_')));
+				wholePart = Integer.parseInt(input.substring(0, input.indexOf('_')));
 				i = input.indexOf('_') + 1;
 			}
 			else if(!input.contains("/")) {
-				wholePart = Integer.parseInt(input.substring(startPos, input.length()));
+				wholePart = Integer.parseInt(input.substring(0, input.length()));
 				break;
 			}
+			else if(input.contains("_") && input.contains("/")) {
+				wholePart = Integer.parseInt(input.substring(0, input.indexOf('_')));
+				numerator = Integer.parseInt(input.substring(input.indexOf('_') + 1, input.indexOf('/')));
+				denominator = Integer.parseInt(input.substring(input.indexOf('/') + 1, input.length()));
+			}
+			else if(!input.contains("_") && input.contains("/")) {
+				numerator = Integer.parseInt(input.substring(0, input.indexOf('/')));
+				denominator = Integer.parseInt(input.substring(input.indexOf('/') + 1, input.length()));
+			}
 		}
-		IntFraction newFraction = new IntFraction(positive, wholePart, numerator, denominator);
+		IntFraction newFraction = new IntFraction(true, wholePart, numerator, denominator);
 		return newFraction;
 	}
 	
@@ -39,8 +44,8 @@ public class Parser {
 			}
 		}
 		for(int i = 0; i < precedence.size(); i++) {
-			newFraction = precedence.get(i).equals("*") ? fracArray.get(precLoc.get(i)).multiply(fracArray.get(precLoc.get(i) + 1)) : fracArray.get(precLoc.get(i)).divide(fracArray.get(precLoc.get(i) + 1));
-			fracArray.remove(precLoc.get(i)); fracArray.remove(precLoc.get(i)); fracArray.add(precLoc.get(i), newFraction);
+			newFraction = precedence.get(i).equals("*") ? fracArray.get(precLoc.get(i).intValue()).multiply(fracArray.get(precLoc.get(i).intValue() + 1)) : fracArray.get(precLoc.get(i).intValue()).divide(fracArray.get(precLoc.get(i).intValue() + 1));
+			fracArray.remove(precLoc.get(i).intValue()); fracArray.remove(precLoc.get(i).intValue()); fracArray.add(precLoc.get(i).intValue(), newFraction);
 		}
 		
 		for(int i = 0; i < opString.size(); i++) {

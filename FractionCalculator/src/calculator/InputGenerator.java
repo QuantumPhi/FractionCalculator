@@ -16,11 +16,13 @@ public class InputGenerator {
 			while(j < cycles) {
 				addString = "";
 				boolean positive = generator.nextBoolean();
-				int wholeNumber = generator.nextInt(100);
-				if(wholeNumber > 49) {
+				boolean wholeNumber = generator.nextBoolean();
+				if(!wholeNumber) {
 					int wholePart = generator.nextInt(100);
 					int numerator = generator.nextInt(100);
-					int denominator = generator.nextInt(100);
+					int denominator = 0;
+					while(denominator == 0) 
+						denominator = generator.nextInt(100);
 					IntFraction newFraction = new IntFraction(positive, wholePart, numerator, denominator);
 					addString += newFraction.toString();
 				}
