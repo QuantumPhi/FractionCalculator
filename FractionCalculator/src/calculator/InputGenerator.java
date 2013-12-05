@@ -4,17 +4,12 @@ import java.io.*;
 import java.util.*;
 
 public class InputGenerator {
-	public static void main(String[] args) {
-		InputGenerator inputGen = new InputGenerator();
-		inputGen.generate(50, 5);
-		System.out.println("Program finished");
-	}
-	
 	public void generate(int number, int cyclesLimit) {
 		try {
-			//Modify as necessary
-			File file = new File("Z:/git//FractionCalculator//FractionCalculator//src//calculator//TextFile.txt");
-			PrintWriter writer = new PrintWriter(file);
+			File file = new File("TextInput");
+			file.delete();
+			file.createNewFile();
+			FileWriter writer = new FileWriter(file);
 			for(int i = 0; i < number; i++) {
 				Random generator = new Random();
 				String addString;
@@ -22,7 +17,7 @@ public class InputGenerator {
 				int cycles = 0;
 				int j = 0;
 				String writeString = "";
-				while(cycles < 2)
+				while(cycles < 1)
 					cycles = generator.nextInt(cyclesLimit + 1);
 				while(j < cycles) {
 					addString = "";
@@ -31,14 +26,20 @@ public class InputGenerator {
 					if(!wholeNumber) {
 						int wholePart = generator.nextInt(100);
 						int numerator = generator.nextInt(100);
-						int denominator = 0;
+						int denominator = generator.nextInt(100);
 						while(denominator == 0) 
 							denominator = generator.nextInt(100);
+						while(writeString.length() >= 2 && numerator == 0 && wholePart == 0 && writeString.charAt(writeString.length() - 2) == '/' ) {
+							wholePart = generator.nextInt(100);
+							numerator = generator.nextInt(100);
+						}
 						IntFraction newFraction = new IntFraction(positive, wholePart, numerator, denominator);
 						addString += newFraction.toString();
 					}
 					else {
 						int writeNumber = generator.nextInt(100);
+						while(writeString.length() >= 2 && writeNumber == 0 && writeString.charAt(writeString.length() - 2) == '/')
+							writeNumber = generator.nextInt(100);
 						if(!positive)
 							writeNumber = -writeNumber;
 						addString += writeNumber;
@@ -50,10 +51,13 @@ public class InputGenerator {
 					writeString += addString;
 					j++;
 				}
-				//TODO: Fix write
-				writer.println(writeString);
+				if(i < number - 1)
+					writer.append(writeString + System.getProperty("line.separator"));
+				else
+					writer.append(writeString);
 				writeString = "";
 			}
+			writer.flush();
 			writer.close();
 		}
 		catch (IOException e) {
