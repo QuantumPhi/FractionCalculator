@@ -44,6 +44,10 @@ public class Parser {
 			fracArray.remove(0); fracArray.remove(0); fracArray.add(0, newFraction);
 		}
 		
+		if(fracArray.size() == 1 && opString.size() == 0) {
+			fracArray.get(0).simplify();
+		}
+		
 		return fracArray.get(0);
 	}
 	
