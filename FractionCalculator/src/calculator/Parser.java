@@ -67,6 +67,14 @@ public class Parser {
 		return returnString;
 	}
 	
+	public static String revSplit(List<String> input) {
+		String returnString = "";
+		for(int i = 0; i < input.size(); i++)
+			returnString = i < input.size() - 1 ? returnString + input.get(i) + " " : returnString + input.get(i);
+		
+		return returnString;
+	}
+	
 	public static boolean isOperator(char input) {
 		String operator = "+-*/";
 		for(int i = 0; i < operator.length(); i++)

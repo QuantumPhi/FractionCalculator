@@ -78,6 +78,10 @@ public class IntFraction {
 		}
 		this.setNumerator(this.numerator / factorDenom);
 		this.setDenominator(this.denominator / factorDenom);
+		if(this.denominator < 0 && this.numerator > 0) {
+			this.setNumerator(this.numerator * -1);
+			this.setDenominator(Math.abs(this.denominator));
+		}
 	}
 	
 	public String toString() {
