@@ -96,7 +96,7 @@ public class IntFraction {
 			returnString += wholePart;
 		else {
 			returnString = wholePart == 0 ? returnString : returnString + wholePart + "_";
-			returnString += this.numerator + "/";
+			returnString = wholePart == 0 ? returnString + this.numerator + "/" : returnString + Math.abs(this.numerator) + "/";
 			returnString += this.denominator;
 		}
 		

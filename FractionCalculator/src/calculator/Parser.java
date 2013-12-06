@@ -12,6 +12,7 @@ public class Parser {
 		else if(input.contains("_") && input.contains("/")) {
 			wholePart = Integer.parseInt(input.substring(0, input.indexOf('_')));
 			numerator = Integer.parseInt(input.substring(input.indexOf('_') + 1, input.indexOf('/')));
+			numerator = wholePart < 0 && numerator > 0 ? numerator * -1 : numerator;
 			denominator = Integer.parseInt(input.substring(input.indexOf('/') + 1, input.length()));
 		}
 		else if(!input.contains("_") && input.contains("/")) {
