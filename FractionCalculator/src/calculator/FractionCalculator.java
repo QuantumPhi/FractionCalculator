@@ -13,7 +13,7 @@ public class FractionCalculator {
 		BufferedReader reader = null;
 		String input = "";
 		System.out.println("Fraction Calculator");
-		while(!input.equalsIgnoreCase("quit")) {
+		while(true) {
 			try {
 				input = console.nextLine();
 				if(input.equalsIgnoreCase("test")) {
@@ -28,7 +28,8 @@ public class FractionCalculator {
 					inputGen = new InputGenerator();
 					int number = 50;
 					int cyclesLimit = 10;
-					inputGen.generate(number, cyclesLimit);
+					int numberSize = 10;
+					inputGen.generate(number, cyclesLimit, numberSize);
 					String testInput = "";
 					for(int i = 0; i < number; i++) {
 						try {
@@ -47,11 +48,21 @@ public class FractionCalculator {
 					System.out.println("Answer: " + solution);
 				}
 			}
-			catch(NumberFormatException e) {
-				System.out.println("ERROR -> " + e.getMessage());
+			catch(Exception e) {
+				if(input.equalsIgnoreCase("quit"))
+					System.out.println("Program Finished");
+				else {
+					String reference = e.getMessage().substring(e.getMessage().indexOf('\"') + 1, e.getMessage().length() - 1);
+					String messagePrint = "";
+					for(int i = 0; i < input.indexOf(reference); i++)
+						messagePrint += " ";
+					messagePrint += "^";
+					messagePrint += " ";
+					messagePrint += e;
+					System.out.println(messagePrint);
+				}
 			}
 		}
-		System.out.println("Program finished.");
 	}
 	
 	public static IntFraction calculate(String input) {

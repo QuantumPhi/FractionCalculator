@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class InputGenerator {
-	public void generate(int number, int cyclesLimit) {
+	public void generate(int number, int cyclesLimit, int numberSize) {
 		try {
 			File file = new File("TextInput");
 			file.delete();
@@ -24,22 +24,22 @@ public class InputGenerator {
 					boolean positive = generator.nextBoolean();
 					boolean wholeNumber = generator.nextBoolean();
 					if(!wholeNumber) {
-						int wholePart = generator.nextInt(100);
-						int numerator = generator.nextInt(100);
-						int denominator = generator.nextInt(100);
+						int wholePart = generator.nextInt(numberSize + 1);
+						int numerator = generator.nextInt(numberSize + 1);
+						int denominator = generator.nextInt(numberSize + 1);
 						while(denominator == 0) 
-							denominator = generator.nextInt(100);
+							denominator = generator.nextInt(numberSize + 1);
 						while(writeString.length() >= 2 && numerator == 0 && wholePart == 0 && writeString.charAt(writeString.length() - 2) == '/' ) {
-							wholePart = generator.nextInt(100);
-							numerator = generator.nextInt(100);
+							wholePart = generator.nextInt(numberSize + 1);
+							numerator = generator.nextInt(numberSize + 1);
 						}
 						IntFraction newFraction = new IntFraction(positive, wholePart, numerator, denominator);
 						addString += newFraction.toString();
 					}
 					else {
-						int writeNumber = generator.nextInt(100);
+						int writeNumber = generator.nextInt(numberSize + 1);
 						while(writeString.length() >= 2 && writeNumber == 0 && writeString.charAt(writeString.length() - 2) == '/')
-							writeNumber = generator.nextInt(100);
+							writeNumber = generator.nextInt(numberSize + 1);
 						if(!positive)
 							writeNumber = -writeNumber;
 						addString += writeNumber;
