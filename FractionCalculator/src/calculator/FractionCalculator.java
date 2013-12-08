@@ -1,7 +1,6 @@
 package calculator;
 
 import java.io.*;
-import java.nio.file.*;
 import java.util.*;
 
 public class FractionCalculator {
@@ -42,6 +41,7 @@ public class FractionCalculator {
 							System.out.println(e.getMessage());
 						}
 					}
+					reader.close();
 				}
 				else {
 					IntFraction solution = calculate(input);
@@ -49,8 +49,10 @@ public class FractionCalculator {
 				}
 			}
 			catch(Exception e) {
-				if(input.equalsIgnoreCase("quit"))
+				if(input.equalsIgnoreCase("quit")) {
 					System.out.println("Program Finished");
+					console.close();
+				}
 				else {
 					String reference = e.getMessage().substring(e.getMessage().indexOf('\"') + 1, e.getMessage().length() - 1);
 					String messagePrint = "";
