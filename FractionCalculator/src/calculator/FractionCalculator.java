@@ -52,6 +52,7 @@ public class FractionCalculator {
 				if(input.equalsIgnoreCase("quit")) {
 					System.out.println("Program Finished");
 					console.close();
+					break;
 				}
 				else {
 					String reference = e.getMessage().substring(e.getMessage().indexOf('\"') + 1, e.getMessage().length() - 1);

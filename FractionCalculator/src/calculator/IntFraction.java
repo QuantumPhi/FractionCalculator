@@ -1,21 +1,18 @@
 package calculator;
 
-public class IntFraction {
+import java.math.BigInteger;
+
+public class IntFraction implements Fraction {
 	private int numerator;
 	private int denominator;
 
-	public int getNumerator() {
-		return numerator;
+	public BigInteger getNumerator() {
+		BigInteger returnNum = new BigInteger(String.valueOf(this.numerator));
+		return returnNum;
 	}
-	public void setNumerator(int numerator) {
-		this.numerator = numerator;
-	}
-
-	public int getDenominator() {
-		return denominator;
-	}
-	public void setDenominator(int denominator) {
-		this.denominator = denominator;
+	public BigInteger getDenominator() {
+		BigInteger returnDenom = new BigInteger(String.valueOf(this.denominator));
+		return returnDenom;
 	}
 
 	public IntFraction(boolean positive, int numerator, int denominator) {
@@ -29,42 +26,42 @@ public class IntFraction {
 	}
 
 	
-	public IntFraction add(IntFraction other) {
+	public Fraction add(Fraction other) {
 		IntFraction newFraction = null;
-		int totalNum = this.numerator * other.getDenominator() + other.getNumerator() * this.denominator;
-		int totalDenom = this.denominator * other.getDenominator();
+		int totalNum = this.numerator * other.getDenominator().intValue() + other.getNumerator().intValue() * this.denominator;
+		int totalDenom = this.denominator * other.getDenominator().intValue();
 		newFraction = new IntFraction(true, totalNum, totalDenom);
 		newFraction.simplify();
 		return newFraction;
 	}
 	
-	public IntFraction subtract(IntFraction other) {
-		IntFraction newFraction = null;
-		int totalNum = this.numerator * other.getDenominator() - other.getNumerator() * this.denominator;
-		int totalDenom = this.denominator * other.getDenominator();
+	public Fraction subtract(Fraction other) {
+		Fraction newFraction = null;
+		int totalNum = this.numerator * other.getDenominator().intValue() - other.getNumerator().intValue() * this.denominator;
+		int totalDenom = this.denominator * other.getDenominator().intValue();
 		newFraction = new IntFraction(true, totalNum, totalDenom);
 		newFraction.simplify();
 		return newFraction;
 	}
 	
-	public IntFraction multiply(IntFraction other) {
-		int totalNum = this.numerator * other.getNumerator();
-		int setDenom = this.denominator * other.getDenominator();
+	public Fraction multiply(Fraction other) {
+		int totalNum = this.numerator * other.getNumerator().intValue();
+		int setDenom = this.denominator * other.getDenominator().intValue();
 		IntFraction newFraction = new IntFraction(true, totalNum, setDenom);
 		newFraction.simplify();
 		return newFraction;
 	}
 	
-	public IntFraction divide(IntFraction other) {
-		int totalNum = this.numerator * other.getDenominator();
-		int setDenom = this.denominator * other.getNumerator();
+	public Fraction divide(Fraction other) {
+		int totalNum = this.numerator * other.getDenominator().intValue();
+		int setDenom = this.denominator * other.getNumerator().intValue();
 		IntFraction newFraction = new IntFraction(true, totalNum, setDenom);
 		newFraction.simplify();
 		return newFraction;
 	}
 	
-	public boolean compare(IntFraction other) {
-		return this.numerator * other.getDenominator() > other.getNumerator() * this.numerator;
+	public boolean compare(Fraction other) {
+		return this.numerator * other.getDenominator().intValue() > other.getNumerator().intValue() * this.numerator;
 	}
 	
 	public void simplify() {
@@ -76,15 +73,15 @@ public class IntFraction {
 			factorNum = factorDenom % factorNum;
 			factorDenom = temp;
 		}
-		this.setNumerator(this.numerator / factorDenom);
-		this.setDenominator(this.denominator / factorDenom);
+		this.numerator /= factorDenom;
+		this.denominator /= factorDenom;
 		if(this.numerator < 0 && this.denominator < 0) {
 			this.numerator *= -1;
 			this.denominator *= -1;
 		}
 		if(this.denominator < 0 && this.numerator > 0) {
-			this.setNumerator(this.numerator * -1);
-			this.setDenominator(Math.abs(this.denominator));
+			this.numerator *= -1;
+			this.denominator = Math.abs(this.denominator);
 		}
 	}
 	
@@ -94,7 +91,7 @@ public class IntFraction {
 		if(Math.abs(this.numerator) >= Math.abs(this.denominator)) {
 			int setNum = this.numerator % this.denominator;
 			wholePart = (this.numerator - setNum) / this.denominator;
-			this.setNumerator(setNum);
+			this.numerator = setNum;
 		}
 		if(numerator == 0)
 			returnString += wholePart;
