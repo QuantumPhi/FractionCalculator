@@ -1,30 +1,52 @@
 package calculator;
 
 import java.util.*;
+import java.math.BigInteger;
 
 public class Parser {
-	public static IntFraction parseFraction(String input) {
-		int wholePart = 0;
-		int numerator = 0;
-		int denominator = 1;
-		if(!input.contains("/"))
-			wholePart = Integer.parseInt(input.substring(0, input.length()));
-		else if(input.contains("_") && input.contains("/")) {
-			wholePart = Integer.parseInt(input.substring(0, input.indexOf('_')));
-			numerator = Integer.parseInt(input.substring(input.indexOf('_') + 1, input.indexOf('/')));
-			numerator = wholePart < 0 && numerator > 0 ? numerator * -1 : numerator;
-			denominator = Integer.parseInt(input.substring(input.indexOf('/') + 1, input.length()));
+	public static Fraction parseFraction(String input, boolean fractionType) {
+		if(fractionType) {
+			int wholePart = 0;
+			int numerator = 0;
+			int denominator = 1;
+			if(!input.contains("/"))
+				wholePart = Integer.parseInt(input.substring(0, input.length()));
+			else if(input.contains("_") && input.contains("/")) {
+				wholePart = Integer.parseInt(input.substring(0, input.indexOf('_')));
+				numerator = Integer.parseInt(input.substring(input.indexOf('_') + 1, input.indexOf('/')));
+				numerator = wholePart < 0 && numerator > 0 ? numerator * -1 : numerator;
+				denominator = Integer.parseInt(input.substring(input.indexOf('/') + 1, input.length()));
+			}
+			else if(!input.contains("_") && input.contains("/")) {
+				numerator = Integer.parseInt(input.substring(0, input.indexOf('/')));
+				denominator = Integer.parseInt(input.substring(input.indexOf('/') + 1, input.length()));
+			}
+			Fraction newFraction = new IntFraction(true, wholePart, numerator, denominator);
+			return newFraction;
 		}
-		else if(!input.contains("_") && input.contains("/")) {
-			numerator = Integer.parseInt(input.substring(0, input.indexOf('/')));
-			denominator = Integer.parseInt(input.substring(input.indexOf('/') + 1, input.length()));
+		else {
+			BigInteger wholePart = BigInteger.ZERO;
+			BigInteger numerator = BigInteger.ZERO;
+			BigInteger denominator = BigInteger.ONE;
+			if(!input.contains("/"))
+				wholePart = new BigInteger(input.substring(0, input.length()));
+			else if(input.contains("_") && input.contains("/")) {
+				wholePart = new BigInteger(input.substring(0, input.indexOf('_')));
+				numerator = new BigInteger(input.substring(input.indexOf('_') + 1, input.indexOf('/')));
+				numerator = !wholePart.equals(wholePart.abs()) && numerator.equals(numerator.abs()) ? numerator.negate() : numerator;
+				denominator = new BigInteger(input.substring(input.indexOf('/') + 1, input.length()));
+			}
+			else if(!input.contains("_") && input.contains("/")) {
+				numerator = new BigInteger(input.substring(0, input.indexOf('/')));
+				denominator = new BigInteger(input.substring(input.indexOf('/') + 1, input.length()));
+			}
+			Fraction newFraction = new BigFraction(true, wholePart, numerator, denominator);
+			return newFraction;
 		}
-		IntFraction newFraction = new IntFraction(true, wholePart, numerator, denominator);
-		return newFraction;
 	}
 	
-	public static IntFraction parseExpression(List<IntFraction> fracArray, List<String> opString) {
-		IntFraction newFraction = null;
+	public static Fraction parseExpression(List<Fraction> fracArray, List<String> opString) {
+		Fraction newFraction = null;
 		List<String> precedence = new ArrayList<String>();
 		List<Integer> precLoc = new ArrayList<Integer>();
 		for(int i = 0; i < opString.size(); i++) {

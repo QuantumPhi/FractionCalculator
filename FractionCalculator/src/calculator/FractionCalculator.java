@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.*;
 
 public class FractionCalculator {
+	public static final boolean FRACTION_TYPE = true;
+	
 	public static void main(String[] args) {
 		Scanner console = new Scanner(System.in);
 		InputGenerator inputGen = null;
@@ -34,7 +36,7 @@ public class FractionCalculator {
 						try {
 							testInput = reader.readLine();
 							System.out.println(testInput);
-							IntFraction solution = calculate(testInput);
+							Fraction solution = calculate(testInput);
 							System.out.println("Answer: " + solution);
 						} 
 						catch (IOException e) {
@@ -44,7 +46,7 @@ public class FractionCalculator {
 					reader.close();
 				}
 				else {
-					IntFraction solution = calculate(input);
+					Fraction solution = calculate(input);
 					System.out.println("Answer: " + solution);
 				}
 			}
@@ -68,10 +70,10 @@ public class FractionCalculator {
 		}
 	}
 	
-	public static IntFraction calculate(String input) {
+	public static Fraction calculate(String input) {
 		List<String> parseList = Parser.split(input);
 		List<String> opList = new ArrayList<String>();
-		List<IntFraction> fracList = new ArrayList<IntFraction>();
+		List<Fraction> fracList = new ArrayList<Fraction>();
 		List<String> parenthesisList = new ArrayList<String>();
 		int parenthesisLoc;
 		for(int i = 0; i < parseList.size(); i++) {
@@ -91,7 +93,7 @@ public class FractionCalculator {
 					parenthesisList.add(parseList.get(i).substring(0, parseList.get(i).length() - 1));
 					parseList.remove(i);
 				}
-				IntFraction newFraction = calculate(Parser.revSplit(parenthesisList));
+				Fraction newFraction = calculate(Parser.revSplit(parenthesisList));
 				parseList.add(parenthesisLoc, newFraction.toString());
 				parenthesisList.clear();
 			}
@@ -102,9 +104,9 @@ public class FractionCalculator {
 			}
 		}
 		for(int i = 0; i < parseList.size(); i++)
-			fracList.add(Parser.parseFraction(parseList.get(i)));
+			fracList.add(Parser.parseFraction(parseList.get(i), FRACTION_TYPE));
 		
-		IntFraction solution = Parser.parseExpression(fracList, opList);
+		Fraction solution = Parser.parseExpression(fracList, opList);
 		return solution;
 	}
 }

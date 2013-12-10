@@ -27,7 +27,7 @@ public class IntFraction implements Fraction {
 
 	
 	public Fraction add(Fraction other) {
-		IntFraction newFraction = null;
+		Fraction newFraction = null;
 		int totalNum = this.numerator * other.getDenominator().intValue() + other.getNumerator().intValue() * this.denominator;
 		int totalDenom = this.denominator * other.getDenominator().intValue();
 		newFraction = new IntFraction(true, totalNum, totalDenom);
@@ -47,7 +47,7 @@ public class IntFraction implements Fraction {
 	public Fraction multiply(Fraction other) {
 		int totalNum = this.numerator * other.getNumerator().intValue();
 		int setDenom = this.denominator * other.getDenominator().intValue();
-		IntFraction newFraction = new IntFraction(true, totalNum, setDenom);
+		Fraction newFraction = new IntFraction(true, totalNum, setDenom);
 		newFraction.simplify();
 		return newFraction;
 	}
@@ -55,7 +55,7 @@ public class IntFraction implements Fraction {
 	public Fraction divide(Fraction other) {
 		int totalNum = this.numerator * other.getDenominator().intValue();
 		int setDenom = this.denominator * other.getNumerator().intValue();
-		IntFraction newFraction = new IntFraction(true, totalNum, setDenom);
+		Fraction newFraction = new IntFraction(true, totalNum, setDenom);
 		newFraction.simplify();
 		return newFraction;
 	}
