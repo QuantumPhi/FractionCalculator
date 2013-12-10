@@ -30,7 +30,7 @@ public class FractionCalculator {
 					int number = 50;
 					int cyclesLimit = 10;
 					int numberSize = 10;
-					int numBits = 53;
+					int numBits = 64;
 					inputGen.generate(number, cyclesLimit, numberSize, numBits, FRACTION_TYPE);
 					String testInput = "";
 					for(int i = 0; i < number; i++) {

@@ -90,7 +90,7 @@ public class BigFraction implements Fraction {
 	public String toString() {
 		String returnString = "";
 		BigInteger wholePart = BigInteger.ZERO;
-		if(this.numerator.equals(this.numerator.abs().compareTo(this.denominator.abs()))) {
+		if(this.numerator.abs().compareTo(this.denominator.abs()) == 1) {
 			BigInteger setNum = this.numerator.mod(this.denominator);
 			wholePart = this.numerator.subtract(setNum).divide(this.denominator);
 			this.numerator = setNum;
