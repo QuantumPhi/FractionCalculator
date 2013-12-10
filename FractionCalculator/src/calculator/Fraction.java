@@ -13,4 +13,6 @@ public interface Fraction {
 	
 	void simplify();
 	boolean compare(Fraction other);
+	
+	String toString();
 }

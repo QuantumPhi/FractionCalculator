@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class FractionCalculator {
-	public static final boolean FRACTION_TYPE = true;
+	public static boolean FRACTION_TYPE = true;
 	
 	public static void main(String[] args) {
 		Scanner console = new Scanner(System.in);
@@ -30,7 +30,8 @@ public class FractionCalculator {
 					int number = 50;
 					int cyclesLimit = 10;
 					int numberSize = 10;
-					inputGen.generate(number, cyclesLimit, numberSize);
+					int numBits = 53;
+					inputGen.generate(number, cyclesLimit, numberSize, numBits, FRACTION_TYPE);
 					String testInput = "";
 					for(int i = 0; i < number; i++) {
 						try {
@@ -44,6 +45,14 @@ public class FractionCalculator {
 						}
 					}
 					reader.close();
+				}
+				else if(input.equalsIgnoreCase("Fraction")) {
+					System.out.print("Fraction type? ");
+					input = console.nextLine();
+					if(input.equalsIgnoreCase("IntFraction"))
+						FRACTION_TYPE = true;
+					if(input.equalsIgnoreCase("BigFraction"))
+						FRACTION_TYPE = false;
 				}
 				else {
 					Fraction solution = calculate(input);
