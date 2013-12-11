@@ -78,8 +78,15 @@ public class Parser {
 		List<String> returnString = new ArrayList<String>();
 		String listAdd = "";
 		for(int i = 0; i < input.length(); i++) {
-			if(input.charAt(i) != ' ')
+			if(valid(input.charAt(i), listAdd) != isOperator(input.charAt(i)) && valid(input.charAt(i), listAdd))
 				listAdd += input.charAt(i);
+			else if(isOperator(input.charAt(i)) && input.charAt(i) != ' ') {
+				returnString.add(listAdd);
+				listAdd = "";
+				listAdd += input.charAt(i);
+				returnString.add(listAdd);
+				listAdd = "";
+			}
 			else {
 				returnString.add(listAdd);
 				listAdd = "";
@@ -96,6 +103,12 @@ public class Parser {
 			returnString = i < input.size() - 1 ? returnString + input.get(i) + " " : returnString + input.get(i);
 		
 		return returnString;
+	}
+	
+	public static boolean valid(char input, String listAdd) {
+		boolean numCheck = listAdd.contains("/");
+		boolean spaceCheck = input != ' ';
+		return !numCheck && spaceCheck;
 	}
 	
 	public static boolean isOperator(char input) {
