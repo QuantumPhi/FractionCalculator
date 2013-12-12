@@ -78,9 +78,10 @@ public class Parser {
 		List<String> returnString = new ArrayList<String>();
 		String listAdd = "";
 		for(int i = 0; i < input.length(); i++) {
-			if(valid(input.charAt(i), listAdd) != isOperator(input.charAt(i)) && valid(input.charAt(i), listAdd))
-				listAdd += input.charAt(i);
-			else if(isOperator(input.charAt(i)) && input.charAt(i) != ' ') {
+			if(input.charAt(i) != ' ')
+				if(!isOperator(input.charAt(i)) || validate(i, listAdd, input.charAt(i)))
+					listAdd += input.charAt(i);
+			else if(isOperator(input.charAt(i))) {
 				returnString.add(listAdd);
 				listAdd = "";
 				listAdd += input.charAt(i);
@@ -105,10 +106,16 @@ public class Parser {
 		return returnString;
 	}
 	
-	public static boolean valid(char input, String listAdd) {
-		boolean numCheck = listAdd.contains("/");
-		boolean spaceCheck = input != ' ';
-		return !numCheck && spaceCheck;
+	public static boolean validate(int index, String listAdd, char addChar) {
+		if(isOperator(addChar) && listAdd.length() > 0)
+			if(addChar != '/')
+				return false;
+		if(!listAdd.contains("_") && addChar == '/' && listAdd.length() > 0)
+			return false;
+		if(listAdd.contains("/"))
+			return false;
+		
+		return true;
 	}
 	
 	public static boolean isOperator(char input) {
