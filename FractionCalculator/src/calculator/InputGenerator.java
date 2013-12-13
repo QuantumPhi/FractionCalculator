@@ -166,7 +166,7 @@ public class InputGenerator {
 			writer.close();
 		}
 		catch (IOException e) {
-			System.out.println(e.getMessage());
+			System.out.println(e);
 		}
 	}
 }
