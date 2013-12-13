@@ -18,6 +18,7 @@ public class InputGenerator {
 			file.delete();
 			file.createNewFile();
 			FileWriter writer = new FileWriter(file);
+			Stack<String> parenthesis = new Stack<String>();
 			for(int i = 0; i < number; i++) {
 				Random generator = new Random();
 				String addString;
@@ -31,6 +32,7 @@ public class InputGenerator {
 					addString = "";
 					boolean positive = generator.nextBoolean();
 					boolean wholeNumber = generator.nextBoolean();
+					int parenthesisNum = generator.nextInt(100);
 					if(!wholeNumber) {
 						int wholePart = generator.nextInt(numberSize + 1);
 						int numerator = generator.nextInt(numberSize + 1);
@@ -42,7 +44,13 @@ public class InputGenerator {
 							numerator = generator.nextInt(numberSize + 1);
 						}
 						IntFraction newFraction = new IntFraction(positive, wholePart, numerator, denominator);
-						addString += newFraction.toString();
+						addString = parenthesisNum > 20 ? addString + newFraction.toString() : addString + "(" + newFraction.toString();
+						if(parenthesisNum <= 20)
+							parenthesis.add("(");
+						else if(parenthesis.size() > 0) {
+							parenthesis.pop();
+							addString += ")";
+						}
 					}
 					else {
 						int writeNumber = generator.nextInt(numberSize + 1);
@@ -50,7 +58,13 @@ public class InputGenerator {
 							writeNumber = generator.nextInt(numberSize + 1);
 						if(!positive)
 							writeNumber = -writeNumber;
-						addString += writeNumber;
+						addString = parenthesisNum > 20 ? addString + writeNumber : addString + "(" + writeNumber;
+						if(parenthesisNum <= 20)
+							parenthesis.add("(");
+						else if(parenthesis.size() > 0) {
+							parenthesis.pop();
+							addString += ")";
+						}
 					}
 					
 					int operatorIndex = generator.nextInt(4);
@@ -58,6 +72,10 @@ public class InputGenerator {
 						addString += " " + operatorString.charAt(operatorIndex) + " ";
 					writeString += addString;
 					j++;
+				}
+				while(parenthesis.size() > 0) {
+					writeString += ")";
+					parenthesis.pop();
 				}
 				if(i < number - 1)
 					writer.append(writeString + System.getProperty("line.separator"));
@@ -79,6 +97,7 @@ public class InputGenerator {
 			file.delete();
 			file.createNewFile();
 			FileWriter writer = new FileWriter(file);
+			Stack<String> parenthesis = new Stack<String>();
 			for(int i = 0; i < number; i++) {
 				Random generator = new Random();
 				String addString;
@@ -92,6 +111,7 @@ public class InputGenerator {
 					addString = "";
 					boolean positive = generator.nextBoolean();
 					boolean wholeNumber = generator.nextBoolean();
+					int parenthesisNum = generator.nextInt(100);
 					if(!wholeNumber) {
 						BigInteger wholePart = new BigInteger(numBits, generator);
 						BigInteger numerator = new BigInteger(numBits, generator);
@@ -103,7 +123,13 @@ public class InputGenerator {
 							numerator = new BigInteger(numBits, generator);
 						}
 						Fraction newFraction = new BigFraction(positive, wholePart, numerator, denominator);
-						addString += newFraction.toString();
+						addString = parenthesisNum > 20 ? addString + newFraction.toString() : addString + "(" + newFraction.toString();
+						if(parenthesisNum <= 20)
+							parenthesis.add("(");
+						else if(parenthesis.size() > 0) {
+							parenthesis.pop();
+							addString += ")";
+						}
 					}
 					else {
 						BigInteger writeNumber = new BigInteger(numBits, generator);
@@ -111,7 +137,13 @@ public class InputGenerator {
 							writeNumber = new BigInteger(numBits, generator);
 						if(!positive)
 							writeNumber = writeNumber.negate();
-						addString += writeNumber;
+						addString = parenthesisNum > 20 ? addString + writeNumber : addString + "(" + writeNumber;
+						if(parenthesisNum <= 20)
+							parenthesis.add("(");
+						else if(parenthesis.size() > 0) {
+							parenthesis.pop();
+							addString += ")";
+						}
 					}
 					
 					int operatorIndex = generator.nextInt(4);
@@ -119,6 +151,10 @@ public class InputGenerator {
 						addString += " " + operatorString.charAt(operatorIndex) + " ";
 					writeString += addString;
 					j++;
+				}
+				while(parenthesis.size() > 0) {
+					writeString += ")";
+					parenthesis.pop();
 				}
 				if(i < number - 1)
 					writer.append(writeString + System.getProperty("line.separator"));

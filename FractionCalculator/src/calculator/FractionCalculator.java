@@ -54,6 +54,11 @@ public class FractionCalculator {
 					if(input.equalsIgnoreCase("BigFraction"))
 						FRACTION_TYPE = false;
 				}
+				else if(Parser.containsComparison(input) != 10) {
+					int comparisonType = Parser.containsComparison(input);
+					List<Fraction> solution = new ArrayList<Fraction>();
+					compare(comparisonType, input, solution);
+				}
 				else {
 					Fraction solution = calculate(input);
 					System.out.println("Answer: " + solution);
@@ -93,14 +98,24 @@ public class FractionCalculator {
 					parseList.remove(i);
 				}
 				else {
-					parenthesisList.add(parseList.get(i).substring(1, parseList.get(i).length()));
-					parseList.remove(i);
-					while(!parseList.get(i).contains(")")) {
-						parenthesisList.add(parseList.get(i));
+					int parenthesisCount = 1;
+					int currentParenthesis = 0;
+					currentParenthesis = parseList.get(i).contains(")") ? currentParenthesis + 1 : currentParenthesis;
+					if(parenthesisCount == currentParenthesis)
+						parenthesisList.add(parseList.get(i).substring(1, parseList.get(i).length() - 1));
+					else {
+						parenthesisList.add(parseList.get(i).substring(1, parseList.get(i).length()));
 						parseList.remove(i);
 					}
-					parenthesisList.add(parseList.get(i).substring(0, parseList.get(i).length() - 1));
-					parseList.remove(i);
+					while(parenthesisCount > currentParenthesis && i < parseList.size()) {
+						parenthesisCount = parseList.get(i).contains("(") ? parenthesisCount + 1 : parenthesisCount;
+						currentParenthesis = parseList.get(i).contains(")") ? currentParenthesis + 1 : currentParenthesis;
+						if(parseList.get(i).length() > 1 && (currentParenthesis == parenthesisCount || parseList.get(i).charAt(parseList.get(i).length() - 1) == ')' && parseList.get(i).charAt(parseList.get(i).length() - 2) == ')'))
+							parenthesisList.add(parseList.get(i).substring(0, parseList.get(i).length() - 1));
+						else
+							parenthesisList.add(parseList.get(i));
+						parseList.remove(i);
+					}
 				}
 				Fraction newFraction = calculate(Parser.revSplit(parenthesisList));
 				parseList.add(parenthesisLoc, newFraction.toString());
@@ -117,5 +132,53 @@ public class FractionCalculator {
 		
 		Fraction solution = Parser.parseExpression(fracList, opList);
 		return solution;
+	}
+	
+	public static void compare(int comparisonType, String input, List<Fraction> solution) {
+		if(comparisonType == 0) {
+			solution.add(calculate(input.substring(0, input.indexOf(">"))));
+			solution.add(calculate(input.substring(input.indexOf(">") + 1, input.length())));
+			int comparison = solution.get(0).compare(solution.get(1));
+			if(comparison == 1)
+				System.out.println("Answer: true");
+			else
+				System.out.println("Answer: false");
+		}
+		else if(comparisonType == 1) {
+			solution.add(calculate(input.substring(0, input.indexOf("<"))));
+			solution.add(calculate(input.substring(input.indexOf("<") + 1, input.length())));
+			int comparison = solution.get(0).compare(solution.get(1));
+			if(comparison == -1)
+				System.out.println("Answer: true");
+			else
+				System.out.println("Answer: false");
+		}
+		else if(comparisonType == 2) {
+			solution.add(calculate(input.substring(0, input.indexOf(">="))));
+			solution.add(calculate(input.substring(input.indexOf(">=") + 2, input.length())));
+			int comparison = solution.get(0).compare(solution.get(1));
+			if(comparison >= 0)
+				System.out.println("Answer: true");
+			else
+				System.out.println("Answer: false");
+		}
+		else if(comparisonType == 3) {
+			solution.add(calculate(input.substring(0, input.indexOf("<="))));
+			solution.add(calculate(input.substring(input.indexOf("<=") + 2, input.length())));
+			int comparison = solution.get(0).compare(solution.get(1));
+			if(comparison <= 0)
+				System.out.println("Answer: true");
+			else
+				System.out.println("Answer: false");
+		}
+		else if(comparisonType == 4) {
+			solution.add(calculate(input.substring(0, input.indexOf("="))));
+			solution.add(calculate(input.substring(input.indexOf("=") + 1, input.length())));
+			int comparison = solution.get(0).compare(solution.get(1));
+			if(comparison == 0)
+				System.out.println("Answer: true");
+			else
+				System.out.println("Answer: false");
+		}
 	}
 }

@@ -60,8 +60,11 @@ public class IntFraction implements Fraction {
 		return newFraction;
 	}
 	
-	public boolean compare(Fraction other) {
-		return this.numerator * other.getDenominator().intValue() > other.getNumerator().intValue() * this.numerator;
+	public int compare(Fraction other) {
+		if(this.numerator * other.getDenominator().intValue() == other.getNumerator().intValue() * this.denominator)
+			return 0;
+		int returnValue = this.numerator * other.getDenominator().intValue() > other.getNumerator().intValue() * this.denominator ? 1 : -1;
+		return returnValue;
 	}
 	
 	public void simplify() {

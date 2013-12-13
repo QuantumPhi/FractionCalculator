@@ -60,10 +60,8 @@ public class BigFraction implements Fraction {
 		return newFraction;
 	}
 	
-	public boolean compare(Fraction other) {
-		BigInteger compareInteger = this.numerator.multiply(other.getDenominator()).max(other.getNumerator().multiply(this.denominator));
-		boolean compareVal = compareInteger == this.numerator.multiply(other.getDenominator()) ? true : false;
-		return compareVal;
+	public int compare(Fraction other) {
+		return this.numerator.multiply(other.getDenominator()).compareTo(other.getNumerator().multiply(this.denominator));
 	}
 	
 	public void simplify() {
@@ -90,7 +88,7 @@ public class BigFraction implements Fraction {
 	public String toString() {
 		String returnString = "";
 		BigInteger wholePart = BigInteger.ZERO;
-		if(this.numerator.abs().compareTo(this.denominator.abs()) == 1) {
+		if(this.numerator.abs().compareTo(this.denominator.abs()) >= 0) {
 			BigInteger setNum = this.numerator.mod(this.denominator);
 			wholePart = this.numerator.subtract(setNum).divide(this.denominator);
 			this.numerator = setNum;

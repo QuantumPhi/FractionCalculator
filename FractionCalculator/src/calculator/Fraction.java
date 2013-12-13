@@ -12,7 +12,7 @@ public interface Fraction {
 	Fraction divide(Fraction other);
 	
 	void simplify();
-	boolean compare(Fraction other);
+	int compare(Fraction other);
 	
 	String toString();
 }

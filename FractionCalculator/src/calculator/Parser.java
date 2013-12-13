@@ -107,7 +107,10 @@ public class Parser {
 	}
 	
 	public static boolean validate(int index, String listAdd, char addChar) {
-		if(isOperator(addChar) && listAdd.length() > 0)
+		int isParenthesis = 0;
+		if(listAdd.length() > 0)
+			isParenthesis = listAdd.charAt(0) == '(' ? 1 : 0;
+		if(isOperator(addChar) && listAdd.length() > 0 + isParenthesis)
 			if(addChar != '/')
 				return false;
 		if(!listAdd.contains("_") && addChar == '/' && listAdd.length() > 0)
@@ -116,6 +119,24 @@ public class Parser {
 			return false;
 		
 		return true;
+	}
+	
+	public static int containsComparison(String input) {
+		int returnNum = 10;
+		String[] comparison = new String[5];
+		comparison[0] = ">";
+		comparison[1] = "<";
+		comparison[2] = ">=";
+		comparison[3] = "<=";
+		comparison[4] = "=";
+		for(int i = 0; i < comparison.length; i++) {
+			if(input.contains(comparison[i])) {
+				returnNum = i;
+				break;
+			}
+		}
+		
+		return returnNum;
 	}
 	
 	public static boolean isOperator(char input) {
