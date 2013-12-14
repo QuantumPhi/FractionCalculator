@@ -40,8 +40,13 @@ public class FractionCalculator {
 							Fraction solution = calculate(testInput);
 							System.out.println("Answer: " + solution);
 						} 
-						catch (IOException e) {
-							System.out.println(e.getMessage());
+						catch (Exception e) {
+							if(!e.getClass().getSimpleName().equals("ArithmeticException"))
+								System.out.println(e);
+							else {
+								System.out.println("Answer: Invalid");
+								continue;
+							}
 						}
 					}
 					reader.close();
@@ -60,8 +65,14 @@ public class FractionCalculator {
 					compare(comparisonType, input, solution);
 				}
 				else {
-					Fraction solution = calculate(input);
-					System.out.println("Answer: " + solution);
+					try {
+						Fraction solution = calculate(input);
+						System.out.println("Answer: " + solution);
+					}
+					catch(Exception e) {
+						if(e.getClass().getSimpleName().equals("ArithmeticException"))
+							System.out.println("Answer: Invalid");
+					}
 				}
 			}
 			catch(Exception e) {
@@ -131,54 +142,61 @@ public class FractionCalculator {
 			fracList.add(Parser.parseFraction(parseList.get(i), FRACTION_TYPE));
 		
 		Fraction solution = Parser.parseExpression(fracList, opList);
+		if(solution.getDenominator().intValue() == 0)
+			throw new java.lang.ArithmeticException();
 		return solution;
 	}
 	
 	public static void compare(int comparisonType, String input, List<Fraction> solution) {
-		if(comparisonType == 0) {
-			solution.add(calculate(input.substring(0, input.indexOf(">"))));
-			solution.add(calculate(input.substring(input.indexOf(">") + 1, input.length())));
-			int comparison = solution.get(0).compare(solution.get(1));
-			if(comparison == 1)
-				System.out.println("Answer: true");
-			else
-				System.out.println("Answer: false");
+		try {
+			if(comparisonType == 0) {
+				solution.add(calculate(input.substring(0, input.indexOf(">"))));
+				solution.add(calculate(input.substring(input.indexOf(">") + 1, input.length())));
+				int comparison = solution.get(0).compare(solution.get(1));
+				if(comparison == 1)
+					System.out.println("Answer: true");
+				else
+					System.out.println("Answer: false");
+			}
+			else if(comparisonType == 1) {
+				solution.add(calculate(input.substring(0, input.indexOf("<"))));
+				solution.add(calculate(input.substring(input.indexOf("<") + 1, input.length())));
+				int comparison = solution.get(0).compare(solution.get(1));
+				if(comparison == -1)
+					System.out.println("Answer: true");
+				else
+					System.out.println("Answer: false");
+			}
+			else if(comparisonType == 2) {
+				solution.add(calculate(input.substring(0, input.indexOf(">="))));
+				solution.add(calculate(input.substring(input.indexOf(">=") + 2, input.length())));
+				int comparison = solution.get(0).compare(solution.get(1));
+				if(comparison >= 0)
+					System.out.println("Answer: true");
+				else
+					System.out.println("Answer: false");
+			}
+			else if(comparisonType == 3) {
+				solution.add(calculate(input.substring(0, input.indexOf("<="))));
+				solution.add(calculate(input.substring(input.indexOf("<=") + 2, input.length())));
+				int comparison = solution.get(0).compare(solution.get(1));
+				if(comparison <= 0)
+					System.out.println("Answer: true");
+				else
+					System.out.println("Answer: false");
+			}
+			else if(comparisonType == 4) {
+				solution.add(calculate(input.substring(0, input.indexOf("="))));
+				solution.add(calculate(input.substring(input.indexOf("=") + 1, input.length())));
+				int comparison = solution.get(0).compare(solution.get(1));
+				if(comparison == 0)
+					System.out.println("Answer: true");
+				else
+					System.out.println("Answer: false");
+			}
 		}
-		else if(comparisonType == 1) {
-			solution.add(calculate(input.substring(0, input.indexOf("<"))));
-			solution.add(calculate(input.substring(input.indexOf("<") + 1, input.length())));
-			int comparison = solution.get(0).compare(solution.get(1));
-			if(comparison == -1)
-				System.out.println("Answer: true");
-			else
-				System.out.println("Answer: false");
-		}
-		else if(comparisonType == 2) {
-			solution.add(calculate(input.substring(0, input.indexOf(">="))));
-			solution.add(calculate(input.substring(input.indexOf(">=") + 2, input.length())));
-			int comparison = solution.get(0).compare(solution.get(1));
-			if(comparison >= 0)
-				System.out.println("Answer: true");
-			else
-				System.out.println("Answer: false");
-		}
-		else if(comparisonType == 3) {
-			solution.add(calculate(input.substring(0, input.indexOf("<="))));
-			solution.add(calculate(input.substring(input.indexOf("<=") + 2, input.length())));
-			int comparison = solution.get(0).compare(solution.get(1));
-			if(comparison <= 0)
-				System.out.println("Answer: true");
-			else
-				System.out.println("Answer: false");
-		}
-		else if(comparisonType == 4) {
-			solution.add(calculate(input.substring(0, input.indexOf("="))));
-			solution.add(calculate(input.substring(input.indexOf("=") + 1, input.length())));
-			int comparison = solution.get(0).compare(solution.get(1));
-			if(comparison == 0)
-				System.out.println("Answer: true");
-			else
-				System.out.println("Answer: false");
+		catch(ArithmeticException e) {
+			System.out.println("Answer: Invalid");
 		}
 	}
 }
