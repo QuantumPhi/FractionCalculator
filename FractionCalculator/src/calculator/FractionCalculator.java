@@ -2,96 +2,82 @@ package calculator;
 
 import java.io.*;
 import java.util.*;
+import javax.swing.*;
 
 public class FractionCalculator {
 	public static boolean FRACTION_TYPE = true;
 	
-	public static void main(String[] args) {
-		Scanner console = new Scanner(System.in);
+	public static void framework(String input, JTextPane pane, JTextField field) {
+		pane.setText("");
 		InputGenerator inputGen = null;
 		FileInputStream fstream = null;
 		DataInputStream in = null;
 		BufferedReader reader = null;
-		String input = "";
-		System.out.println("Fraction Calculator");
-		while(true) {
-			try {
-				input = console.nextLine();
-				if(input.equalsIgnoreCase("test")) {
+		try {
+			if(input.equalsIgnoreCase("test")) {
+				try {
+					fstream = new FileInputStream("TextInput");
+				} 
+				catch (FileNotFoundException e) {
+					pane.setText(e.toString());
+				}
+				in = new DataInputStream(fstream);
+				reader = new BufferedReader(new InputStreamReader(in));
+				inputGen = new InputGenerator();
+				int number = 50;
+				int cyclesLimit = 10;
+				int numberSize = 10;
+				int numBits = 64;
+				inputGen.generate(number, cyclesLimit, numberSize, numBits, FRACTION_TYPE);
+				String testInput = "";
+				for(int i = 0; i < number; i++) {
 					try {
-						fstream = new FileInputStream("TextInput");
+						testInput = reader.readLine();
+						pane.setText(pane.getText() + testInput);
+						Fraction solution = calculate(testInput);
+						pane.setText(pane.getText() + "\nAnswer: " + solution + "\n");
 					} 
-					catch (FileNotFoundException e) {
-						System.out.println(e.getMessage());
-					}
-					in = new DataInputStream(fstream);
-					reader = new BufferedReader(new InputStreamReader(in));
-					inputGen = new InputGenerator();
-					int number = 50;
-					int cyclesLimit = 10;
-					int numberSize = 10;
-					int numBits = 64;
-					inputGen.generate(number, cyclesLimit, numberSize, numBits, FRACTION_TYPE);
-					String testInput = "";
-					for(int i = 0; i < number; i++) {
-						try {
-							testInput = reader.readLine();
-							System.out.println(testInput);
-							Fraction solution = calculate(testInput);
-							System.out.println("Answer: " + solution);
-						} 
-						catch (Exception e) {
-							if(!e.getClass().getSimpleName().equals("ArithmeticException"))
-								System.out.println(e);
-							else {
-								System.out.println("Answer: Invalid");
-								continue;
-							}
+					catch (Exception e) {
+						if(!e.getClass().getSimpleName().equals("ArithmeticException"))
+							pane.setText(e.toString());
+						else {
+							pane.setText("\n" + "Answer: Invalid" + "\n");
+							continue;
 						}
 					}
-					reader.close();
 				}
-				else if(input.equalsIgnoreCase("Fraction")) {
-					System.out.print("Fraction type? ");
-					input = console.nextLine();
-					if(input.equalsIgnoreCase("IntFraction"))
-						FRACTION_TYPE = true;
-					if(input.equalsIgnoreCase("BigFraction"))
-						FRACTION_TYPE = false;
+				reader.close();
+			}
+			else if(input.equalsIgnoreCase("IntFraction")) {
+				FRACTION_TYPE = true;
+			}
+			else if(input.equalsIgnoreCase("BigFraction")) {
+				FRACTION_TYPE = false;
+			}
+			else if(Parser.containsComparison(input) != 10) {
+				int comparisonType = Parser.containsComparison(input);
+				List<Fraction> solution = new ArrayList<Fraction>();
+				pane.setText(input);
+				compare(comparisonType, input, solution, pane);
+			}
+			else {
+				try {
+					Fraction solution = calculate(input);
+					pane.setText(input);
+					pane.setText(pane.getText() + "\nAnswer: " + solution + "\n");
 				}
-				else if(Parser.containsComparison(input) != 10) {
-					int comparisonType = Parser.containsComparison(input);
-					List<Fraction> solution = new ArrayList<Fraction>();
-					compare(comparisonType, input, solution);
-				}
-				else {
-					try {
-						Fraction solution = calculate(input);
-						System.out.println("Answer: " + solution);
+				catch(Exception e) {
+					if(e.getClass().getSimpleName().equals("ArithmeticException")) {
+						pane.setText(input);
+						pane.setText(pane.getText() + "\nAnswer: Invalid\n");
 					}
-					catch(Exception e) {
-						if(e.getClass().getSimpleName().equals("ArithmeticException"))
-							System.out.println("Answer: Invalid");
-					}
+					else
+						throw e;
 				}
 			}
-			catch(Exception e) {
-				if(input.equalsIgnoreCase("quit")) {
-					System.out.println("Program Finished");
-					console.close();
-					break;
-				}
-				else {
-					String reference = e.getMessage().substring(e.getMessage().indexOf('\"') + 1, e.getMessage().length() - 1);
-					String messagePrint = "";
-					for(int i = 0; i < input.indexOf(reference); i++)
-						messagePrint += " ";
-					messagePrint += "^";
-					messagePrint += " ";
-					messagePrint += e;
-					System.out.println(messagePrint);
-				}
-			}
+		}
+		catch(Exception e) {
+			pane.setText(e.toString());
 		}
 	}
 	
@@ -147,56 +133,56 @@ public class FractionCalculator {
 		return solution;
 	}
 	
-	public static void compare(int comparisonType, String input, List<Fraction> solution) {
+	public static void compare(int comparisonType, String input, List<Fraction> solution, JTextPane pane) {
 		try {
 			if(comparisonType == 0) {
 				solution.add(calculate(input.substring(0, input.indexOf(">"))));
 				solution.add(calculate(input.substring(input.indexOf(">") + 1, input.length())));
 				int comparison = solution.get(0).compare(solution.get(1));
 				if(comparison == 1)
-					System.out.println("Answer: true");
+					pane.setText(pane.getText() + "\nAnswer: true\n");
 				else
-					System.out.println("Answer: false");
+					pane.setText(pane.getText() + "\nAnswer: false\n");
 			}
 			else if(comparisonType == 1) {
 				solution.add(calculate(input.substring(0, input.indexOf("<"))));
 				solution.add(calculate(input.substring(input.indexOf("<") + 1, input.length())));
 				int comparison = solution.get(0).compare(solution.get(1));
 				if(comparison == -1)
-					System.out.println("Answer: true");
+					pane.setText(pane.getText() + "\nAnswer: true\n");
 				else
-					System.out.println("Answer: false");
+					pane.setText(pane.getText() + "\nAnswer: false\n");
 			}
 			else if(comparisonType == 2) {
 				solution.add(calculate(input.substring(0, input.indexOf(">="))));
 				solution.add(calculate(input.substring(input.indexOf(">=") + 2, input.length())));
 				int comparison = solution.get(0).compare(solution.get(1));
 				if(comparison >= 0)
-					System.out.println("Answer: true");
+					pane.setText(pane.getText() + "\nAnswer: true\n");
 				else
-					System.out.println("Answer: false");
+					pane.setText(pane.getText() + "\nAnswer: false\n");
 			}
 			else if(comparisonType == 3) {
 				solution.add(calculate(input.substring(0, input.indexOf("<="))));
 				solution.add(calculate(input.substring(input.indexOf("<=") + 2, input.length())));
 				int comparison = solution.get(0).compare(solution.get(1));
 				if(comparison <= 0)
-					System.out.println("Answer: true");
+					pane.setText(pane.getText() + "\nAnswer: true\n");
 				else
-					System.out.println("Answer: false");
+					pane.setText(pane.getText() + "\nAnswer: false\n");
 			}
 			else if(comparisonType == 4) {
 				solution.add(calculate(input.substring(0, input.indexOf("="))));
 				solution.add(calculate(input.substring(input.indexOf("=") + 1, input.length())));
 				int comparison = solution.get(0).compare(solution.get(1));
 				if(comparison == 0)
-					System.out.println("Answer: true");
+					pane.setText(pane.getText() + "\nAnswer: true\n");
 				else
-					System.out.println("Answer: false");
+					pane.setText(pane.getText() + "\nAnswer: false\n");
 			}
 		}
 		catch(ArithmeticException e) {
-			System.out.println("Answer: Invalid");
+			pane.setText("Answer: Invalid");
 		}
 	}
 }
