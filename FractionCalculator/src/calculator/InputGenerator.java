@@ -19,13 +19,24 @@ public class InputGenerator {
 			file.createNewFile();
 			FileWriter writer = new FileWriter(file);
 			Stack<String> parenthesis = new Stack<String>();
+			boolean comparison = false;
+			String temp = "";
 			for(int i = 0; i < number; i++) {
 				Random generator = new Random();
 				String addString;
 				String operatorString = "+-*/";
 				int cycles = 0;
 				int j = 0;
+				int compare = 314;
 				String writeString = "";
+				if(comparison) {
+					writeString = temp;
+					comparison = false;
+				}
+				if(!containsComparison(writeString))
+					compare = generator.nextInt(100);
+				else
+					compare = 314;
 				while(cycles < 1)
 					cycles = generator.nextInt(cyclesLimit + 1);
 				while(j < cycles) {
@@ -77,11 +88,20 @@ public class InputGenerator {
 					writeString += ")";
 					parenthesis.pop();
 				}
-				if(i < number - 1)
+				if(compare < 10) {
+					writeString += " " + generateComparison() + " ";
+					comparison = true;
+					i--;
+				}
+				else if(i < number - 1) {
 					writer.append(writeString + System.getProperty("line.separator"));
-				else
+					writeString = "";
+				}
+				else {
 					writer.append(writeString);
-				writeString = "";
+					writeString = "";
+				}
+				temp = writeString;
 			}
 			writer.flush();
 			writer.close();
@@ -98,13 +118,24 @@ public class InputGenerator {
 			file.createNewFile();
 			FileWriter writer = new FileWriter(file);
 			Stack<String> parenthesis = new Stack<String>();
+			boolean comparison = false;
+			String temp = "";
 			for(int i = 0; i < number; i++) {
 				Random generator = new Random();
 				String addString;
 				String operatorString = "+-*/";
 				int cycles = 0;
 				int j = 0;
+				int compare = 314;
 				String writeString = "";
+				if(comparison) {
+					writeString = temp;
+					comparison = false;
+				}
+				if(!containsComparison(writeString))
+					compare = generator.nextInt(100);
+				else
+					compare = 314;
 				while(cycles < 1)
 					cycles = generator.nextInt(cyclesLimit);
 				while(j < cycles) {
@@ -156,11 +187,20 @@ public class InputGenerator {
 					writeString += ")";
 					parenthesis.pop();
 				}
-				if(i < number - 1)
+				if(compare < 10) {
+					writeString += " " + generateComparison() + " ";
+					comparison = true;
+					i--;
+				}
+				else if(i < number - 1) {
 					writer.append(writeString + System.getProperty("line.separator"));
-				else
+					writeString = "";
+				}
+				else {
 					writer.append(writeString);
-				writeString = "";
+					writeString = "";
+				}
+				temp = writeString;
 			}
 			writer.flush();
 			writer.close();
@@ -168,5 +208,32 @@ public class InputGenerator {
 		catch (IOException e) {
 			System.out.println(e);
 		}
+	}
+	
+	public String generateComparison() {
+		Random generator = new Random();
+		String[] comparison = new String[5];
+		comparison[0] = ">";
+		comparison[1] = "<";
+		comparison[2] = ">=";
+		comparison[3] = "<=";
+		comparison[4] = "=";
+		int randomIndex = generator.nextInt(5);
+		
+		return comparison[randomIndex];
+	}
+	
+	public boolean containsComparison(String input) {
+		String[] comparison = new String[5];
+		comparison[0] = ">";
+		comparison[1] = "<";
+		comparison[2] = ">=";
+		comparison[3] = "<=";
+		comparison[4] = "=";
+		for(int i = 0; i < comparison.length; i++)
+			if(input.contains(comparison[i]))
+				return true;
+		
+		return false;
 	}
 }

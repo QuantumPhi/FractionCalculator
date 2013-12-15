@@ -132,7 +132,8 @@ public class Parser {
 		for(int i = 0; i < comparison.length; i++) {
 			if(input.contains(comparison[i])) {
 				returnNum = i;
-				break;
+				if(returnNum == 2 || returnNum == 3)
+					break;
 			}
 		}
 		

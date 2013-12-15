@@ -1,5 +1,7 @@
 package calculator;
 
+import java.awt.Color;
+
 import javax.swing.GroupLayout;
 import javax.swing.JComponent;
 import javax.swing.JSpinner;
@@ -8,6 +10,10 @@ import javax.swing.LayoutStyle;
 import javax.swing.SpinnerListModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 public class FracCalcFrame extends javax.swing.JFrame {
     /**
@@ -79,8 +85,10 @@ public class FracCalcFrame extends javax.swing.JFrame {
     	this.jTextField1.setText("");
     	if(!input.equals(""))
     		FractionCalculator.framework(input, this.jTextPane1, this.jTextField1);
-    	else
-    		this.jTextPane1.setText("Please enter an expression!");
+    	else {
+    		this.jTextPane1.setText("");
+    		appendToPane(this.jTextPane1, "Please enter an expression!", Color.BLUE);
+    	}
     }
 
     public static void main(String args[]) {
@@ -90,6 +98,20 @@ public class FracCalcFrame extends javax.swing.JFrame {
             }
         });
     }
+    
+    public static void appendToPane(JTextPane tp, String msg, Color c) {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+
+        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Dialog");
+        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+
+        int len = tp.getDocument().getLength();
+        tp.setCaretPosition(len);
+        tp.setCharacterAttributes(aset, false);
+        tp.replaceSelection(msg);
+    }
+    
     private JSpinner getJSpinner1() {
     	if (jSpinner1 == null) {
     		SpinnerListModel jSpinner1Model = 

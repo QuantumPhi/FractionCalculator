@@ -1,7 +1,9 @@
 package calculator;
 
+import java.awt.Color;
 import java.io.*;
 import java.util.*;
+
 import javax.swing.*;
 
 public class FractionCalculator {
@@ -32,13 +34,20 @@ public class FractionCalculator {
 				for(int i = 0; i < number; i++) {
 					try {
 						testInput = reader.readLine();
-						pane.setText(pane.getText() + testInput);
-						Fraction solution = calculate(testInput);
-						pane.setText(pane.getText() + "\nAnswer: " + solution + "\n");
+						FracCalcFrame.appendToPane(pane, testInput, Color.BLACK);
+						if(Parser.containsComparison(testInput) != 10) {
+							int comparisonType = Parser.containsComparison(testInput);
+							List<Fraction> solutionCompare = new ArrayList<Fraction>();
+							compare(comparisonType, testInput, solutionCompare, pane);
+						}
+						else {
+							Fraction solution = calculate(testInput);
+							FracCalcFrame.appendToPane(pane, "\nAnswer: " + solution + "\n", Color.BLUE);
+						}
 					} 
 					catch (Exception e) {
 						if(e.getClass().getSimpleName().equals("ArithmeticException")) {
-							pane.setText(pane.getText() + testInput + "\n" + "Answer: Invalid" + "\n");
+							FracCalcFrame.appendToPane(pane, "\nAnswer: Invalid\n", Color.RED);
 							continue;
 						}
 						else
@@ -56,19 +65,18 @@ public class FractionCalculator {
 			else if(Parser.containsComparison(input) != 10) {
 				int comparisonType = Parser.containsComparison(input);
 				List<Fraction> solution = new ArrayList<Fraction>();
-				pane.setText(input);
+				FracCalcFrame.appendToPane(pane, input, Color.BLACK);;
 				compare(comparisonType, input, solution, pane);
 			}
 			else {
 				try {
+					FracCalcFrame.appendToPane(pane, input, Color.BLACK);
 					Fraction solution = calculate(input);
-					pane.setText(input);
-					pane.setText(pane.getText() + "\nAnswer: " + solution + "\n");
+					FracCalcFrame.appendToPane(pane, "\nAnswer: " + solution + "\n", Color.BLUE);
 				}
 				catch(Exception e) {
 					if(e.getClass().getSimpleName().equals("ArithmeticException")) {
-						pane.setText(input);
-						pane.setText(pane.getText() + "\nAnswer: Invalid\n");
+						FracCalcFrame.appendToPane(pane, "\nAnswer: Invalid\n", Color.RED);
 					}
 					else
 						throw e;
@@ -76,19 +84,8 @@ public class FractionCalculator {
 			}
 		}
 		catch(Exception e) {
-			if(e.getClass().getSimpleName().equals("NumberFormatException")) {
-				String indexString = e.getMessage().substring(e.getMessage().indexOf('\"') + 1, e.getMessage().length() - 1);
-				int index = input.indexOf(indexString);
-				String paneMessage = "";
-				for(int i = 0; i <= index + 1; i++)
-					paneMessage += " ";
-				paneMessage += "^";
-				paneMessage += " " + e;
-				pane.setText(input);
-				pane.setText(pane.getText() + "\n" + paneMessage + "\n");
-			}
-			else
-				pane.setText(e.toString());
+			pane.setText("");
+			FracCalcFrame.appendToPane(pane, e.toString(), Color.RED);
 		}
 	}
 	
@@ -151,49 +148,49 @@ public class FractionCalculator {
 				solution.add(calculate(input.substring(input.indexOf(">") + 1, input.length())));
 				int comparison = solution.get(0).compare(solution.get(1));
 				if(comparison == 1)
-					pane.setText(pane.getText() + "\nAnswer: true\n");
+					FracCalcFrame.appendToPane(pane, "\nAnswer: true\n", Color.BLUE);
 				else
-					pane.setText(pane.getText() + "\nAnswer: false\n");
+					FracCalcFrame.appendToPane(pane, "\nAnswer: false\n", Color.BLUE);
 			}
 			else if(comparisonType == 1) {
 				solution.add(calculate(input.substring(0, input.indexOf("<"))));
 				solution.add(calculate(input.substring(input.indexOf("<") + 1, input.length())));
 				int comparison = solution.get(0).compare(solution.get(1));
 				if(comparison == -1)
-					pane.setText(pane.getText() + "\nAnswer: true\n");
+					FracCalcFrame.appendToPane(pane, "\nAnswer: true\n", Color.BLUE);
 				else
-					pane.setText(pane.getText() + "\nAnswer: false\n");
+					FracCalcFrame.appendToPane(pane, "\nAnswer: false\n", Color.BLUE);
 			}
 			else if(comparisonType == 2) {
 				solution.add(calculate(input.substring(0, input.indexOf(">="))));
 				solution.add(calculate(input.substring(input.indexOf(">=") + 2, input.length())));
 				int comparison = solution.get(0).compare(solution.get(1));
 				if(comparison >= 0)
-					pane.setText(pane.getText() + "\nAnswer: true\n");
+					FracCalcFrame.appendToPane(pane, "\nAnswer: true\n", Color.BLUE);
 				else
-					pane.setText(pane.getText() + "\nAnswer: false\n");
+					FracCalcFrame.appendToPane(pane, "\nAnswer: false\n", Color.BLUE);
 			}
 			else if(comparisonType == 3) {
 				solution.add(calculate(input.substring(0, input.indexOf("<="))));
 				solution.add(calculate(input.substring(input.indexOf("<=") + 2, input.length())));
 				int comparison = solution.get(0).compare(solution.get(1));
 				if(comparison <= 0)
-					pane.setText(pane.getText() + "\nAnswer: true\n");
+					FracCalcFrame.appendToPane(pane, "\nAnswer: true\n", Color.BLUE);
 				else
-					pane.setText(pane.getText() + "\nAnswer: false\n");
+					FracCalcFrame.appendToPane(pane, "\nAnswer: false\n", Color.BLUE);
 			}
 			else if(comparisonType == 4) {
 				solution.add(calculate(input.substring(0, input.indexOf("="))));
 				solution.add(calculate(input.substring(input.indexOf("=") + 1, input.length())));
 				int comparison = solution.get(0).compare(solution.get(1));
 				if(comparison == 0)
-					pane.setText(pane.getText() + "\nAnswer: true\n");
+					FracCalcFrame.appendToPane(pane, "\nAnswer: true\n", Color.BLUE);
 				else
-					pane.setText(pane.getText() + "\nAnswer: false\n");
+					FracCalcFrame.appendToPane(pane, "\nAnswer: false\n", Color.BLUE);
 			}
 		}
 		catch(ArithmeticException e) {
-			pane.setText("Answer: Invalid");
+			pane.setText(pane.getText() + "\nAnswer: Invalid\n");
 		}
 	}
 }
