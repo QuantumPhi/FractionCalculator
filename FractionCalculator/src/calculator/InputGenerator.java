@@ -109,12 +109,9 @@ public class InputGenerator {
 			writer.flush();
 			writer.close();
 		}
-		catch (Exception e) {
+		catch (IOException e) {
 			pane.setText("");
-			if(e.getClass().getSimpleName().equals("NullPointerException"))
-				FracCalcFrame.appendToPane(pane, "TextInput file initialized!", Color.GREEN);
-			else
-				FracCalcFrame.appendToPane(pane, e.toString(), Color.RED);
+			FracCalcFrame.appendToPane(pane, e.toString(), Color.RED);
 		}
 	}
 	

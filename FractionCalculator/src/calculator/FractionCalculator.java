@@ -50,6 +50,10 @@ public class FractionCalculator {
 							FracCalcFrame.appendToPane(pane, "\nAnswer: Invalid\n", Color.RED);
 							continue;
 						}
+						else if(e.getClass().getSimpleName().equals("NullPointerException")) {
+							FracCalcFrame.appendToPane(pane, "TextInput file initialized!", Color.GREEN);
+							break;
+						}
 						else
 							throw e;
 					}
