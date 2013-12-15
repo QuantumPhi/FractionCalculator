@@ -37,8 +37,10 @@ public class FractionCalculator {
 						pane.setText(pane.getText() + "\nAnswer: " + solution + "\n");
 					} 
 					catch (Exception e) {
-						if(e.getClass().getSimpleName().equals("ArithmeticException"))
-							pane.setText("\n" + "Answer: Invalid" + "\n");
+						if(e.getClass().getSimpleName().equals("ArithmeticException")) {
+							pane.setText(pane.getText() + testInput + "\n" + "Answer: Invalid" + "\n");
+							continue;
+						}
 						else
 							throw e;
 					}
