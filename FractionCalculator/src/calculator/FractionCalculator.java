@@ -84,7 +84,7 @@ public class FractionCalculator {
 			}
 		}
 		catch(Exception e) {
-			pane.setText("");
+			pane.setText(input + "\n");
 			FracCalcFrame.appendToPane(pane, e.toString(), Color.RED);
 		}
 	}
