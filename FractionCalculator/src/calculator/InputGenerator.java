@@ -1,18 +1,21 @@
 package calculator;
 
+import java.awt.Color;
 import java.io.*;
 import java.util.*;
 import java.math.BigInteger;
 
+import javax.swing.JTextPane;
+
 public class InputGenerator {
-	public void generate(int number, int cyclesLimit, int numberSize, int numBits, boolean fractionType) {
+	public void generate(JTextPane pane, int number, int cyclesLimit, int numberSize, int numBits, boolean fractionType) {
 		if(fractionType)
-			generateIntFraction(number, cyclesLimit, numberSize);
+			generateIntFraction(pane, number, cyclesLimit, numberSize);
 		else
-			generateBigFraction(number, cyclesLimit, numBits);
+			generateBigFraction(pane, number, cyclesLimit, numBits);
 	}
 	
-	public void generateIntFraction(int number, int cyclesLimit, int numberSize) {
+	public void generateIntFraction(JTextPane pane, int number, int cyclesLimit, int numberSize) {
 		try {
 			File file = new File("TextInput");
 			file.delete();
@@ -106,12 +109,16 @@ public class InputGenerator {
 			writer.flush();
 			writer.close();
 		}
-		catch (IOException e) {
-			System.out.println(e.getMessage());
+		catch (Exception e) {
+			pane.setText("");
+			if(e.getClass().getSimpleName().equals("NullPointerException"))
+				FracCalcFrame.appendToPane(pane, "TestInput file initialized!", Color.GREEN);
+			else
+				FracCalcFrame.appendToPane(pane, e.toString(), Color.RED);
 		}
 	}
 	
-	public void generateBigFraction(int number, int cyclesLimit, int numBits) {
+	public void generateBigFraction(JTextPane pane, int number, int cyclesLimit, int numBits) {
 		try {
 			File file = new File("TextInput");
 			file.delete();

@@ -29,7 +29,7 @@ public class FractionCalculator {
 				int cyclesLimit = 10;
 				int numberSize = 10;
 				int numBits = 64;
-				inputGen.generate(number, cyclesLimit, numberSize, numBits, FRACTION_TYPE);
+				inputGen.generate(pane, number, cyclesLimit, numberSize, numBits, FRACTION_TYPE);
 				String testInput = "";
 				for(int i = 0; i < number; i++) {
 					try {
