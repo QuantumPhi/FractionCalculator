@@ -8,7 +8,6 @@ public class FractionCalculator {
 	public static boolean FRACTION_TYPE = true;
 	
 	public static void framework(String input, JTextPane pane, JTextField field) {
-		pane.setText("");
 		InputGenerator inputGen = null;
 		FileInputStream fstream = null;
 		DataInputStream in = null;
@@ -38,12 +37,10 @@ public class FractionCalculator {
 						pane.setText(pane.getText() + "\nAnswer: " + solution + "\n");
 					} 
 					catch (Exception e) {
-						if(!e.getClass().getSimpleName().equals("ArithmeticException"))
-							pane.setText(e.toString());
-						else {
+						if(e.getClass().getSimpleName().equals("ArithmeticException"))
 							pane.setText("\n" + "Answer: Invalid" + "\n");
-							continue;
-						}
+						else
+							throw e;
 					}
 				}
 				reader.close();
@@ -77,7 +74,19 @@ public class FractionCalculator {
 			}
 		}
 		catch(Exception e) {
-			pane.setText(e.toString());
+			if(e.getClass().getSimpleName().equals("NumberFormatException")) {
+				String indexString = e.getMessage().substring(e.getMessage().indexOf('\"') + 1, e.getMessage().length() - 1);
+				int index = input.indexOf(indexString);
+				String paneMessage = "";
+				for(int i = 0; i <= index + 1; i++)
+					paneMessage += " ";
+				paneMessage += "^";
+				paneMessage += " " + e;
+				pane.setText(input);
+				pane.setText(pane.getText() + "\n" + paneMessage + "\n");
+			}
+			else
+				pane.setText(e.toString());
 		}
 	}
 	

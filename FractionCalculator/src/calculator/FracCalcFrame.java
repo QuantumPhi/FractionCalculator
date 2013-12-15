@@ -74,9 +74,13 @@ public class FracCalcFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+    	this.jTextPane1.setText("");
     	String input = this.jTextField1.getText();
     	this.jTextField1.setText("");
-    	FractionCalculator.framework(input, this.jTextPane1, this.jTextField1);
+    	if(!input.equals(""))
+    		FractionCalculator.framework(input, this.jTextPane1, this.jTextField1);
+    	else
+    		this.jTextPane1.setText("Please enter an expression!");
     }
 
     public static void main(String args[]) {
