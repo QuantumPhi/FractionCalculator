@@ -50,10 +50,6 @@ public class FractionCalculator {
 							FracCalcFrame.appendToPane(pane, "\nAnswer: Invalid\n", Color.RED);
 							continue;
 						}
-						else if(e.getClass().getSimpleName().equals("NullPointerException")) {
-							FracCalcFrame.appendToPane(pane, "TextInput file initialized!", Color.GREEN);
-							break;
-						}
 						else
 							throw e;
 					}
@@ -88,8 +84,13 @@ public class FractionCalculator {
 			}
 		}
 		catch(Exception e) {
-			pane.setText(input + "\n");
-			FracCalcFrame.appendToPane(pane, e.toString(), Color.RED);
+			pane.setText("");
+			if(!e.getClass().getSimpleName().equals("NullPointerException")) {
+				pane.setText(input + "\n");
+				FracCalcFrame.appendToPane(pane, e.toString(), Color.RED);
+			}
+			else
+				FracCalcFrame.appendToPane(pane, "TextInput file initialized!", Color.GREEN);
 		}
 	}
 	
