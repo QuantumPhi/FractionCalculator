@@ -92,7 +92,7 @@ public class FractionCalculator {
 				FracCalcFrame.highlightText(pane, errorString, Color.YELLOW);
 			}
 			else if(e.getClass().getSimpleName().equals("NullPointerException"))
-				FracCalcFrame.appendToPane(pane, "TextInput file initialized!", Color.GREEN);
+				FracCalcFrame.appendToPane(pane, "TextInput file initialized!", Color.BLUE);
 			else {
 				pane.setText(input + "\n");
 				FracCalcFrame.appendToPane(pane, e.toString(), Color.RED);
