@@ -11,6 +11,8 @@ import javax.swing.SpinnerListModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
@@ -110,6 +112,17 @@ public class FracCalcFrame extends javax.swing.JFrame {
         tp.setCaretPosition(len);
         tp.setCharacterAttributes(aset, false);
         tp.replaceSelection(msg);
+    }
+    
+    public static void highlightText(JTextPane tp, String string, Color c) {
+    	DefaultHighlighter.DefaultHighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(c);
+   	   	try {
+			tp.getHighlighter().addHighlight(tp.getText().indexOf(string), tp.getText().indexOf(string) + string.length(), highlightPainter);
+		} 
+   	   	catch (BadLocationException e) {
+			tp.setText("");
+			appendToPane(tp, e.toString(), Color.RED);
+		}
     }
     
     private JSpinner getJSpinner1() {

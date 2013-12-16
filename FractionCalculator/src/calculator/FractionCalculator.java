@@ -85,12 +85,18 @@ public class FractionCalculator {
 		}
 		catch(Exception e) {
 			pane.setText("");
-			if(!e.getClass().getSimpleName().equals("NullPointerException")) {
+			if(e.getClass().getSimpleName().equals("NumberFormatException")) {
+				FracCalcFrame.appendToPane(pane, input, Color.BLACK);
+				String errorString = e.getMessage().substring(e.getMessage().indexOf('\"') + 1, e.getMessage().length() - 1);
+				FracCalcFrame.appendToPane(pane, "\n" + e.toString(), Color.RED);
+				FracCalcFrame.highlightText(pane, errorString, Color.YELLOW);
+			}
+			else if(e.getClass().getSimpleName().equals("NullPointerException"))
+				FracCalcFrame.appendToPane(pane, "TextInput file initialized!", Color.GREEN);
+			else {
 				pane.setText(input + "\n");
 				FracCalcFrame.appendToPane(pane, e.toString(), Color.RED);
 			}
-			else
-				FracCalcFrame.appendToPane(pane, "TextInput file initialized!", Color.GREEN);
 		}
 	}
 	
