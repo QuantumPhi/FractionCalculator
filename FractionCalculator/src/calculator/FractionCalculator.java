@@ -114,7 +114,7 @@ public class FractionCalculator {
 					parseList.remove(i);
 				}
 				else {
-					int parenthesisCount = 1;
+					int parenthesisCount = get(parseList.get(i), '(');
 					int currentParenthesis = 0;
 					currentParenthesis = parseList.get(i).contains(")") ? currentParenthesis + 1 : currentParenthesis;
 					if(parenthesisCount == currentParenthesis)
@@ -124,7 +124,6 @@ public class FractionCalculator {
 						parseList.remove(i);
 					}
 					while(parenthesisCount > currentParenthesis && i < parseList.size()) {
-						parenthesisCount = parseList.get(i).contains("(") ? parenthesisCount + 1 : parenthesisCount;
 						currentParenthesis = parseList.get(i).contains(")") ? currentParenthesis + 1 : currentParenthesis;
 						if(parseList.get(i).length() > 1 && (currentParenthesis == parenthesisCount || parseList.get(i).charAt(parseList.get(i).length() - 1) == ')' && parseList.get(i).charAt(parseList.get(i).length() - 2) == ')'))
 							parenthesisList.add(parseList.get(i).substring(0, parseList.get(i).length() - 1));
@@ -203,5 +202,12 @@ public class FractionCalculator {
 		catch(ArithmeticException e) {
 			pane.setText(pane.getText() + "\nAnswer: Invalid\n");
 		}
+	}
+	
+	public static int get(String input, char findChar) {
+		int returnInt = 0;
+		for(int i = 0; i < input.length(); i++) 
+			returnInt = input.charAt(i) == findChar ? returnInt + 1 : returnInt;
+		return returnInt;
 	}
 }
