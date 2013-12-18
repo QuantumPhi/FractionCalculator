@@ -15,7 +15,7 @@ public class InputGenerator {
 			generateBigFraction(pane, number, cyclesLimit, numBits);
 	}
 	
-	public void generateIntFraction(JTextPane pane, int number, int cyclesLimit, int numberSize) {
+	private void generateIntFraction(JTextPane pane, int number, int cyclesLimit, int numberSize) {
 		try {
 			File file = new File("TextInput");
 			file.delete();
@@ -115,7 +115,7 @@ public class InputGenerator {
 		}
 	}
 	
-	public void generateBigFraction(JTextPane pane, int number, int cyclesLimit, int numBits) {
+	private void generateBigFraction(JTextPane pane, int number, int cyclesLimit, int numBits) {
 		try {
 			File file = new File("TextInput");
 			file.delete();
