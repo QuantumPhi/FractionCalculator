@@ -124,6 +124,7 @@ public class FractionCalculator {
 						parseList.remove(i);
 					}
 					while(parenthesisCount > currentParenthesis && i < parseList.size()) {
+						parenthesisCount = parseList.get(i).contains("(") ? parenthesisCount + 1 : parenthesisCount;
 						currentParenthesis = parseList.get(i).contains(")") ? currentParenthesis + 1 : currentParenthesis;
 						if(parseList.get(i).length() > 1 && (currentParenthesis == parenthesisCount || parseList.get(i).charAt(parseList.get(i).length() - 1) == ')' && parseList.get(i).charAt(parseList.get(i).length() - 2) == ')'))
 							parenthesisList.add(parseList.get(i).substring(0, parseList.get(i).length() - 1));
