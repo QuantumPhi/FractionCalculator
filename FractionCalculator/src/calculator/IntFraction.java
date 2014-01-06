@@ -96,7 +96,7 @@ public class IntFraction implements Fraction {
 			setNum = this.numerator % this.denominator;
 			wholePart = (this.numerator - setNum) / this.denominator;
 		}
-		if(numerator == 0)
+		if(numerator % denominator == 0)
 			returnString += wholePart;
 		else {
 			returnString = wholePart == 0 ? returnString : returnString + wholePart + "_";
