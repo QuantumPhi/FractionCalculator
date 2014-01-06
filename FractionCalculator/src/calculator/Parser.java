@@ -14,7 +14,8 @@ public class Parser {
 			else if(input.contains("_") && input.contains("/")) {
 				wholePart = Integer.parseInt(input.substring(0, input.indexOf('_')));
 				numerator = Integer.parseInt(input.substring(input.indexOf('_') + 1, input.indexOf('/')));
-				numerator = wholePart < 0 && numerator > 0 ? numerator * -1 : numerator;
+				numerator = wholePart < 0 && numerator > 0 ? -numerator : numerator;
+				numerator = input.charAt(0) == '-' && wholePart == 0 ? -numerator : numerator;
 				denominator = Integer.parseInt(input.substring(input.indexOf('/') + 1, input.length()));
 			}
 			else if(!input.contains("_") && input.contains("/")) {
@@ -22,6 +23,7 @@ public class Parser {
 				denominator = Integer.parseInt(input.substring(input.indexOf('/') + 1, input.length()));
 			}
 			Fraction newFraction = new IntFraction(true, wholePart, numerator, denominator);
+			newFraction.simplify();
 			return newFraction;
 		}
 		else {
@@ -34,6 +36,7 @@ public class Parser {
 				wholePart = new BigInteger(input.substring(0, input.indexOf('_')));
 				numerator = new BigInteger(input.substring(input.indexOf('_') + 1, input.indexOf('/')));
 				numerator = !wholePart.equals(wholePart.abs()) && numerator.equals(numerator.abs()) ? numerator.negate() : numerator;
+				numerator = input.charAt(0) == '-' && wholePart.equals(BigInteger.ZERO) ? numerator.negate() : numerator;
 				denominator = new BigInteger(input.substring(input.indexOf('/') + 1, input.length()));
 			}
 			else if(!input.contains("_") && input.contains("/")) {
@@ -41,6 +44,7 @@ public class Parser {
 				denominator = new BigInteger(input.substring(input.indexOf('/') + 1, input.length()));
 			}
 			Fraction newFraction = new BigFraction(true, wholePart, numerator, denominator);
+			newFraction.simplify();
 			return newFraction;
 		}
 	}
