@@ -63,18 +63,12 @@ public class FractionCalculator {
 				compare(comparisonType, input, solution, pane);
 			}
 			else {
-				try {
-					FracCalcFrame.appendToPane(pane, input, Color.BLACK);
-					Fraction solution = calculate(input);
+				FracCalcFrame.appendToPane(pane, input, Color.BLACK);
+				Fraction solution = calculate(input);
+				if(solution == null)
+					FracCalcFrame.appendToPane(pane, "\nAnswer: " + solution + "\n", Color.RED);
+				else
 					FracCalcFrame.appendToPane(pane, "\nAnswer: " + solution + "\n", Color.BLUE);
-				}
-				catch(Exception e) {
-					if(e.getClass().getSimpleName().equals("ArithmeticException")) {
-						FracCalcFrame.appendToPane(pane, "\nAnswer: Invalid\n", Color.RED);
-					}
-					else
-						throw e;
-				}
 			}
 		}
 		catch(Exception e) {
@@ -140,9 +134,11 @@ public class FractionCalculator {
 		for(int i = 0; i < parseList.size(); i++)
 			fracList.add(Parser.parseFraction(parseList.get(i), FRACTION_TYPE));
 		
-		Fraction solution = Parser.parseExpression(fracList, opList);
-		if(solution.getDenominator().intValue() == 0)
-			throw new java.lang.ArithmeticException();
+		Fraction solution;
+		try {
+			solution = Parser.parseExpression(fracList, opList);
+		}
+		catch (ArithmeticException e) { solution = null; }
 		return solution;
 	}
 	
