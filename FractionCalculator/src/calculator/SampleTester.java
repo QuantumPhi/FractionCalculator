@@ -23,12 +23,13 @@
 // If you disagree with what I thought the output should be (or if
 // I've made a mistake in my tester), just let me know and we can
 // discuss.
+
 package calculator;
 
 public class SampleTester {
    // If you modify this KEEP constant, you can see more examples of
    // cases that failed:
-   private static final int KEEP = 10;
+   private static final int KEEP = 100;
 
    private static final String QUOT = "\"";
 

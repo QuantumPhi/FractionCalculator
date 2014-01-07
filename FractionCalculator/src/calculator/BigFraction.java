@@ -90,9 +90,16 @@ public class BigFraction implements Fraction {
 		BigInteger wholePart = BigInteger.ZERO;
 		BigInteger setNum = this.numerator.mod(this.denominator);
 		if(this.numerator.abs().compareTo(this.denominator.abs()) >= 0)
+<<<<<<< HEAD
 			wholePart = this.numerator.subtract(setNum).divide(this.denominator);
 		if(numerator.mod(denominator).equals(BigInteger.ZERO))
+=======
+			wholePart = this.numerator.subtract(setNum).divide(this.denominator);
+		if(setNum.equals(BigInteger.ZERO)) {
+			wholePart = this.numerator.divide(this.denominator);
+>>>>>>> branch 'master' of https://github.com/QuantumPhi/FractionCalculator.git
 			returnString += wholePart;
+		}
 		else {
 			returnString = wholePart.equals(BigInteger.ZERO) ? returnString : returnString + wholePart + "_";
 			returnString = wholePart.equals(BigInteger.ZERO) ? returnString + this.numerator + "/" : returnString + setNum.abs() + "/";

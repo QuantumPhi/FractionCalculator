@@ -92,10 +92,21 @@ public class IntFraction implements Fraction {
 		String returnString = "";
 		int wholePart = 0;
 		int setNum = this.numerator % this.denominator;
+<<<<<<< HEAD
 		if(Math.abs(this.numerator) >= Math.abs(this.denominator))
+=======
+		if(Math.abs(this.numerator) >= Math.abs(this.denominator)) {
+>>>>>>> branch 'master' of https://github.com/QuantumPhi/FractionCalculator.git
 			wholePart = (this.numerator - setNum) / this.denominator;
+<<<<<<< HEAD
 		if(numerator % denominator == 0)
+=======
+		}
+		if(setNum == 0) {
+			wholePart = this.numerator / this.denominator;
+>>>>>>> branch 'master' of https://github.com/QuantumPhi/FractionCalculator.git
 			returnString += wholePart;
+		}
 		else {
 			returnString = wholePart == 0 ? returnString : returnString + wholePart + "_";
 			returnString = wholePart == 0 ? returnString + this.numerator + "/" : returnString + Math.abs(setNum) + "/";
