@@ -88,16 +88,16 @@ public class BigFraction implements Fraction {
 	public String toString() {
 		String returnString = "";
 		BigInteger wholePart = BigInteger.ZERO;
+		BigInteger setNum = BigInteger.ZERO;
 		if(this.numerator.abs().compareTo(this.denominator.abs()) >= 0) {
-			BigInteger setNum = this.numerator.mod(this.denominator);
+			setNum = this.numerator.mod(this.denominator);
 			wholePart = this.numerator.subtract(setNum).divide(this.denominator);
-			this.numerator = setNum;
 		}
-		if(numerator.equals(BigInteger.ZERO))
+		if(setNum.equals(BigInteger.ZERO))
 			returnString += wholePart;
 		else {
 			returnString = wholePart.equals(BigInteger.ZERO) ? returnString : returnString + wholePart + "_";
-			returnString = wholePart.equals(BigInteger.ZERO) ? returnString + this.numerator + "/" : returnString + this.numerator.abs() + "/";
+			returnString = wholePart.equals(BigInteger.ZERO) ? returnString + this.numerator + "/" : returnString + setNum.abs() + "/";
 			returnString += this.denominator;
 		}
 		
