@@ -56,12 +56,6 @@ public class FractionCalculator {
 				}
 				reader.close();
 			}
-			else if(input.equalsIgnoreCase("IntFraction")) {
-				FRACTION_TYPE = true;
-			}
-			else if(input.equalsIgnoreCase("BigFraction")) {
-				FRACTION_TYPE = false;
-			}
 			else if(Parser.containsComparison(input) != 10) {
 				int comparisonType = Parser.containsComparison(input);
 				List<Fraction> solution = new ArrayList<Fraction>();
