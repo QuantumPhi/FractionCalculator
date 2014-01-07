@@ -28,7 +28,7 @@ package calculator;
 public class SampleTester {
    // If you modify this KEEP constant, you can see more examples of
    // cases that failed:
-   private static final int KEEP = 10;
+   private static final int KEEP = 100;
 
    private static final String QUOT = "\"";
 
