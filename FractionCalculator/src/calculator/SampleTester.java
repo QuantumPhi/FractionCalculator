@@ -23,6 +23,7 @@
 // If you disagree with what I thought the output should be (or if
 // I've made a mistake in my tester), just let me know and we can
 // discuss.
+
 package calculator;
 
 public class SampleTester {
