@@ -91,12 +91,8 @@ public class BigFraction implements Fraction {
 		BigInteger setNum = this.numerator.mod(this.denominator);
 		if(this.numerator.abs().compareTo(this.denominator.abs()) >= 0)
 			wholePart = this.numerator.subtract(setNum).divide(this.denominator);
-		if(numerator.mod(denominator).equals(BigInteger.ZERO))
-			wholePart = this.numerator.subtract(setNum).divide(this.denominator);
-		if(setNum.equals(BigInteger.ZERO)) {
-			wholePart = this.numerator.divide(this.denominator);
+		if(setNum.equals(BigInteger.ZERO))
 			returnString += wholePart;
-		}
 		else {
 			returnString = wholePart.equals(BigInteger.ZERO) ? returnString : returnString + wholePart + "_";
 			returnString = wholePart.equals(BigInteger.ZERO) ? returnString + this.numerator + "/" : returnString + setNum.abs() + "/";

@@ -94,14 +94,8 @@ public class IntFraction implements Fraction {
 		int setNum = this.numerator % this.denominator;
 		if(Math.abs(this.numerator) >= Math.abs(this.denominator))
 			wholePart = (this.numerator - setNum) / this.denominator;
-		if(setNum == 0) {
-			wholePart = this.numerator / this.denominator;
+		if(setNum == 0)
 			returnString += wholePart;
-		}
-		if(setNum == 0) {
-			wholePart = this.numerator / this.denominator;
-			returnString += wholePart;
-		}
 		else {
 			returnString = wholePart == 0 ? returnString : returnString + wholePart + "_";
 			returnString = wholePart == 0 ? returnString + this.numerator + "/" : returnString + Math.abs(setNum) + "/";
