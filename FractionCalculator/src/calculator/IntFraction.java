@@ -91,11 +91,9 @@ public class IntFraction implements Fraction {
 	public String toString() {
 		String returnString = "";
 		int wholePart = 0;
-		int setNum = 0;
-		if(Math.abs(this.numerator) >= Math.abs(this.denominator)) {
-			setNum = this.numerator % this.denominator;
+		int setNum = this.numerator % this.denominator;
+		if(Math.abs(this.numerator) >= Math.abs(this.denominator))
 			wholePart = (this.numerator - setNum) / this.denominator;
-		}
 		if(numerator % denominator == 0)
 			returnString += wholePart;
 		else {
